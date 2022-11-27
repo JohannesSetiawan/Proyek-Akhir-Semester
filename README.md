@@ -12,7 +12,7 @@
 TBA
 
 ## Deskripsi Aplikasi
-Aplikasi yang akan kami buat adalah Nutrious Mobile. Nutrious Mobile merupakan aplikasi *mobile* yang diadaptasi dari aplikasi web yang telah kami buat
+Aplikasi yang akan kami buat adalah Nutrious Mobile. Nutrious Mobile merupakan aplikasi *mobile* yang diadaptasi dari aplikasi [web](https://nutrious.up.railway.app/) yang telah kami buat
 sebelumnya. Aplikasi ini kami buat untuk mendukung penyelesaian isu kesehatan global sebagaimana yang dibahas oleh pemimpin-pemimpin dunia pada Konferensi
 G20. Spesifiknya, aplikasi ini berfokus pada permasalahan terkait bagaimana meningkatkan asupan gizi masyarakat untuk kualitas hidup yang lebih baik. Untuk
 mengimplementasikan hal ini, kami membuat beberapa fitur pada aplikasi ini yang bermanfaat bagi pengguna aplikasi itu sendiri maupun masyarakat secara umum.
