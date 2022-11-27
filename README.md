@@ -34,7 +34,9 @@ Fitur ini terdiri dari halaman daftar lokasi pembagian makanan yang ada, formuli
 4. Calorie Tracker (Stelline Claudia)<br>
 Fitur ini terdiri dari halaman daftar kalori yang dikonsumsi dan dibakar, formulir untuk menambahkan kalori yang dikonsumsi, formulir untuk menambah kalori yang dibakar, fitur untuk menghapus daftar kalori, dan fitur untuk mengedit daftar kalori.
 
-5. Food Recipe (Muhammad Faris Umar Rahman)
+5. Food Recipe (Muhammad Faris Umar Rahman)<br>
+Fitur ini terdiri dari halaman yang berisi daftar resep makanan yang terdiri dari judul makanan, tanggal resep dibuat, nama pembuat resep, *ingredients* makanan, 
+dan langkah-langkah pembuatan makanan. Resep makanan dapat ditambahkan dari oleh *user* melalui fitur *add recipe* yang tersedia.
 
 6. Blog (Dhafin Raditya Juliawan)<br>
 Fitur ini terdiri dari halaman utama *blog post*, formulir untuk menambahkan *post* baru, fitur untuk menampilkan *post* dengan tag yang diinginkan oleh *user* dan fitur *upvote-downvote* sebuah *post*.
