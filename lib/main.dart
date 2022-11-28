@@ -44,6 +44,13 @@ class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
   String username = '';
   String password = '';
+  bool isPasswordVisible = true;
+
+  void togglePasswordVisibility(){
+    setState(() {
+      isPasswordVisible = !isPasswordVisible;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,13 +115,21 @@ class _MyHomePageState extends State<MyHomePage> {
                         Container(
                           padding: const EdgeInsets.all(7),
                           child: TextFormField(
-                            obscureText: true,
+                            obscureText: isPasswordVisible,
                             decoration: InputDecoration(
                               hintText: "Enter Your Password",
                               labelText: "Password",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
+                              suffixIcon: GestureDetector(
+                                onTap: (){
+                                  togglePasswordVisibility();
+                                },
+                                child: Icon(
+                                  isPasswordVisible ? Icons.visibility_off : Icons.visibility,
+                                ),
+                              )
                             ),
                             onChanged: (String? value){
                               setState(() {
