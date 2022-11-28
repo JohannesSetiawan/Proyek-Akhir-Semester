@@ -167,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: OutlinedButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                final response = await request.login("https://nutrious.up.railway.app/auth/login", {
+                                final response = await request.login("https://nutrious.up.railway.app/auth/login/", {
                                   'username': username,
                                   'password': password1,
                                 });
