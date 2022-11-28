@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,16 +14,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: const Color(0xFF004AAD),
+        primarySwatch: Colors.indigo,
+        //primaryColor: const Color(0xFF004AAD),
         fontFamily: 'Poppins',
         inputDecorationTheme: const InputDecorationTheme(
-          labelStyle: TextStyle(color: Color(0xFF004AAD)),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Color(0xFF004AAD)
-            )
+              color: Colors.indigo
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(10.0))
           )
-        )
+        ),
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -39,10 +42,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
+  String username = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Preventing overflow
+      // resizeToAvoidBottomInset: false,
       body: Container(
         color: const Color(0xFFF0FFFF) ,
         child: Center(
@@ -63,11 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset('images/NUTRIOUS.png', width: 250,),
-                const Text('Log In', style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 32)),
-                const SizedBox(height: 20),
+                Image.asset('images/NUTRIOUS.png', width: 250),
+                const SizedBox(height: 13),
                 Form(
                   key: _formKey,
                   child: SingleChildScrollView(
@@ -80,9 +84,25 @@ class _MyHomePageState extends State<MyHomePage> {
                               hintText: "Enter Your Username",
                               labelText: "Username",
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
+                                borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
+                            onChanged: (String? value){
+                              setState(() {
+                                username = value!;
+                              });
+                            },
+                            onSaved: (String? value){
+                              setState(() {
+                                username = value!;
+                              });
+                            },
+                            validator: (String? value){
+                              if (value == null || value.isEmpty){
+                                return 'Please fill the username field';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                         Container(
@@ -93,8 +113,71 @@ class _MyHomePageState extends State<MyHomePage> {
                               hintText: "Enter Your Password",
                               labelText: "Password",
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
+                                borderRadius: BorderRadius.circular(10.0),
                               ),
+                            ),
+                            onChanged: (String? value){
+                              setState(() {
+                                password = value!;
+                              });
+                            },
+                            onSaved: (String? value){
+                              setState(() {
+                                password = value!;
+                              });
+                            },
+                            validator: (String? value){
+                              if (value == null || value.isEmpty){
+                                return 'Please fill the password field';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(7),
+                          child: OutlinedButton(
+                            onPressed: (){
+                              if (_formKey.currentState!.validate()) {}
+                            },
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(
+                                color: Colors.indigo
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)
+                              )
+                            ),
+                            child: const Text("Log In", style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 17
+                            ),),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                const TextSpan(
+                                  text: "No Account? ",
+                                  style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      color: Colors.grey)
+                                ),
+                                TextSpan(
+                                  text: "Create a New One",
+                                  style: const TextStyle(
+                                      fontFamily: "Poppins",
+                                      color: Colors.indigo,
+                                      fontWeight: FontWeight.w700),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = (){
+                                      launchUrl(Uri.parse("https://nutrious.up.railway.app/register/"));
+                                    },
+                                )
+                              ]
                             ),
                           ),
                         )
