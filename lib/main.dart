@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -55,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String username = '';
   String password1 = '';
   bool isPasswordVisible = true;
+  bool isLoading = false;
 
   void togglePasswordVisibility(){
     setState(() {
@@ -162,62 +161,99 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                         Container(
-                          width: double.infinity,
                           padding: const EdgeInsets.all(7),
-                          child: OutlinedButton(
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                final response = await request.login("https://nutrious.up.railway.app/auth/login/", {
-                                  'username': username,
-                                  'password': password1,
-                                });
-                                if (request.loggedIn){
-                                  // do something
-                                } else{
-                                  // do something
-                                }
-                              }
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(
-                                color: Colors.indigo
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                              )
-                            ),
-                            child: const Text("Log In", style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 17
-                            ),),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(5),
-                          child: RichText(
-                            text: TextSpan(
-                              children: [
-                                const TextSpan(
-                                  text: "No Account? ",
-                                  style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      color: Colors.grey)
+                          child: !isLoading ? Column(
+                            children: [
+                              OutlinedButton(
+                                onPressed: () async {
+                                  FocusScopeNode currentFocus = FocusScope.of(context);
+                                  if (!currentFocus.hasPrimaryFocus) {
+                                    currentFocus.unfocus();
+                                  }
+                                  if (_formKey.currentState!.validate()) {
+                                    setState((){
+                                      isLoading=true;
+                                    });
+                                    final response = await request.login("https://nutrious.up.railway.app/auth/login/", {
+                                      'username': username,
+                                      'password': password1,
+                                    });
+                                    setState((){
+                                      isLoading=false;
+                                    });
+                                    if (request.loggedIn){
+                                      // TODO: for logged in user, if user has waited for a long time, abort request and show dialog
+                                    } else{
+                                      showDialog(context: context, builder: (context) {
+                                        return AlertDialog(
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(15.0))
+                                          ),
+                                          title: const Text("Login Failed", style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                          ),),
+                                          content: const Text("Your username or password is wrong"),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.all(5),
+                                                child: const Text("Back", style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                ),),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                    }
+                                  }
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  side: const BorderSide(
+                                    color: Colors.indigo
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0)
+                                  )
                                 ),
-                                TextSpan(
-                                  text: "Create a New One",
-                                  style: const TextStyle(
-                                      fontFamily: "Poppins",
-                                      color: Colors.indigo,
-                                      fontWeight: FontWeight.w700),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = (){
-                                      launchUrl(Uri.parse("https://nutrious.up.railway.app/register/"));
-                                    },
-                                )
-                              ]
-                            ),
-                          ),
-                        )
+                                child: const Text("Log In", style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18
+                                ),),
+                              ),
+                              const SizedBox(height: 2),
+                              Container(
+                                padding: const EdgeInsets.all(5),
+                                child: RichText(
+                                  text: TextSpan(
+                                      children: [
+                                        const TextSpan(
+                                            text: "No Account? ",
+                                            style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                color: Colors.grey)
+                                        ),
+                                        TextSpan(
+                                          text: "Create a New One",
+                                          style: const TextStyle(
+                                              fontFamily: "Poppins",
+                                              color: Colors.indigo,
+                                              fontWeight: FontWeight.w700),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = (){
+                                              launchUrl(Uri.parse("https://nutrious.up.railway.app/register/"));
+                                            },
+                                        )
+                                      ]
+                                  ),
+                                ),
+                              )
+                            ],
+                          ) : const Center(child: CircularProgressIndicator()),
+                        ),
                       ],
                     ),
                   ),
