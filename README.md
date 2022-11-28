@@ -43,7 +43,7 @@ Fitur ini terdiri dari halaman utama *blog post*, formulir untuk menambahkan *po
 
 ## Peran atau Aktor Pengguna Aplikasi
 Terdapat dua jenis pengguna pada aplikasi ini, yaitu admin dan pengguna biasa (*user*). Admin dapat melihat siapa saja user yang sudah terdaftar, donasi
-yang dibuka oleh *user*, dan pesan yang dikirimkan oleh *user*. Sementara itu, *user* terdiri dari dua jenis, yaitu *user* yang sudah terverifikasi dan *user8 yang
+yang dibuka oleh *user*, dan pesan yang dikirimkan oleh *user*. Sementara itu, *user* terdiri dari dua jenis, yaitu *user* yang sudah terverifikasi dan *user* yang
 belum terverifikasi. Semua *user* yang sudah *logged in* ke dalam aplikasi dapat melakukan donasi, membuat *log* terkait aktivitas yang berhubungan dengan
 penambahan atau pembakaran kalori, membagikan resep makanan sehat, membuat *blog*, dan melakukan *upvote* atau *downvote* pada *blog*. Sementara itu, untuk alasan
 keamanan, hanya *user* yang sudah terverifikasi saja yang dapat membuka penggalangan dana dan memberikan informasi terkait lokasi pembagian makanan.
