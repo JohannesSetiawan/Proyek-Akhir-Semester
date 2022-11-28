@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,22 +15,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        //primaryColor: const Color(0xFF004AAD),
-        fontFamily: 'Poppins',
-        inputDecorationTheme: const InputDecorationTheme(
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.indigo
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(10.0))
-          )
+    return Provider(
+      create: (_){
+        CookieRequest request = CookieRequest();
+        return request;
+      },
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.indigo,
+          //primaryColor: const Color(0xFF004AAD),
+          fontFamily: 'Poppins',
+          inputDecorationTheme: const InputDecorationTheme(
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.indigo
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(10.0))
+            )
+          ),
         ),
+        home: const MyHomePage(title: 'Flutter Demo Home Page'),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -43,7 +53,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
   String username = '';
-  String password = '';
+  String password1 = '';
   bool isPasswordVisible = true;
 
   void togglePasswordVisibility(){
@@ -54,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       // Preventing overflow
       // resizeToAvoidBottomInset: false,
@@ -128,17 +139,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                 },
                                 child: Icon(
                                   isPasswordVisible ? Icons.visibility_off : Icons.visibility,
+                                  size: 20.0,
                                 ),
                               )
                             ),
                             onChanged: (String? value){
                               setState(() {
-                                password = value!;
+                                password1 = value!;
                               });
                             },
                             onSaved: (String? value){
                               setState(() {
-                                password = value!;
+                                password1 = value!;
                               });
                             },
                             validator: (String? value){
@@ -153,8 +165,18 @@ class _MyHomePageState extends State<MyHomePage> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(7),
                           child: OutlinedButton(
-                            onPressed: (){
-                              if (_formKey.currentState!.validate()) {}
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                final response = await request.login("https://nutrious.up.railway.app/auth/login", {
+                                  'username': username,
+                                  'password': password1,
+                                });
+                                if (request.loggedIn){
+                                  // do something
+                                } else{
+                                  // do something
+                                }
+                              }
                             },
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(
