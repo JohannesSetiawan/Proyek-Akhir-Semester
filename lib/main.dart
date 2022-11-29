@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:nutrious/page/user_dashboard.dart';
+import 'package:nutrious/page/admin_dashboard.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -184,15 +187,30 @@ class _MyHomePageState extends State<MyHomePage> {
                                     });
                                     if (request.loggedIn){
                                       // TODO: if user has waited for a long time, abort request and show dialog
-                                      // ignore: use_build_context_synchronously
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => UserDashboard(
-                                          nickname: response["nickname"],
-                                          desc: response["description"],
-                                          profURL: response["profile_pict_url"],
-                                          isVerified: response["is_verified_user"],))
-                                      );
+                                      if (response["is_admin"]){
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => AdminDashboard(
+                                              isAdmin: response["is_admin"],
+                                              username: response["username"],
+                                              nickname: response["nickname"],
+                                              desc: response["description"],
+                                              profURL: response["profile_pict_url"],
+                                              isVerified: response["is_verified_user"],))
+                                        );
+                                      }
+                                      else{
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => UserDashboard(
+                                              isAdmin: response["is_admin"],
+                                              username: response["username"],
+                                              nickname: response["nickname"],
+                                              desc: response["description"],
+                                              profURL: response["profile_pict_url"],
+                                              isVerified: response["is_verified_user"],))
+                                        );
+                                      }
                                     } else{
                                       showDialog(context: context, builder: (context) {
                                         return AlertDialog(
