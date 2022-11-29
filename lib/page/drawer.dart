@@ -1,13 +1,24 @@
 import 'package:nutrious/main.dart';
+import 'package:nutrious/page/profile.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:nutrious/page/user_dashboard.dart';
 
 class DrawerMenu extends StatelessWidget {
+  final isAdmin;
+  final username;
+  final description;
   final nickname;
   final profileURL;
   final isVerified;
-  const DrawerMenu({Key? key, required this.nickname, required this.profileURL, required this.isVerified}) : super(key: key);
+  const DrawerMenu({Key? key,
+    required this.isAdmin,
+    required this.username,
+    required this.description,
+    required this.nickname,
+    required this.profileURL,
+    required this.isVerified}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +29,7 @@ class DrawerMenu extends StatelessWidget {
             currentAccountPicture: CircleAvatar(
               radius: 50,
               backgroundImage: NetworkImage(
-                profileURL,
+                "${profileURL}",
               ),
             ),
             accountEmail: isVerified ? const Text("Verified") : const Text("Not Verified"),
@@ -40,12 +51,34 @@ class DrawerMenu extends StatelessWidget {
           const ListTile(
             title: Text("Blog"),
           ),
-          const ListTile(
+          ListTile(
+            trailing: const Icon(Icons.home, color: Colors.indigo,),
+            title: const Text("Back to Home", style: TextStyle(
+                fontWeight: FontWeight.w700,
+                color: Colors.indigo
+            ),),
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => UserDashboard(desc: description, isAdmin: isAdmin, isVerified: isVerified, nickname: nickname, profURL: profileURL, username: username,))
+              );
+            },
+          ),
+          ListTile(
+            trailing: Icon(Icons.person, color: Colors.indigo,),
             title: Text("View Profile", style: TextStyle(
               fontWeight: FontWeight.w700,
+              color: Colors.indigo
             ),),
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyProfile(isAdmin: isAdmin, username: username, description: description, nickname: nickname, profileURL: profileURL, isVerified: isVerified))
+              );
+            },
           ),
           const ListTile(
+            trailing: Icon(Icons.exit_to_app, color: Colors.redAccent,),
             title: Text("Log Out", style: TextStyle(
                 fontWeight: FontWeight.w700,
                 color: Colors.redAccent
