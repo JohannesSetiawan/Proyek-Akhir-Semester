@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:nutrious/page/profile.dart';
+import 'package:nutrious/model/user_data.dart';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:nutrious/main.dart';
 
 class AdminDashboard extends StatelessWidget {
-  final isAdmin;
-  final username;
-  final nickname;
-  final desc;
-  final profURL;
-  final isVerified;
-  const AdminDashboard({Key? key,
-    required this.isAdmin,
-    required this.username,
-    required this.nickname,
-    required this.desc,
-    required this.profURL,
-    required this.isVerified}) : super(key: key);
+  const AdminDashboard({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    final args = ModalRoute.of(context)!.settings.arguments as UserArguments;
     return Scaffold(
       appBar: AppBar(
           backgroundColor: const Color(0xFFF0FFFF),
@@ -38,11 +32,11 @@ class AdminDashboard extends StatelessWidget {
               currentAccountPicture: CircleAvatar(
                 radius: 50,
                 backgroundImage: NetworkImage(
-                  profURL,
+                  args.profURL,
                 ),
               ),
               accountEmail: const Text('Admin'),
-              accountName: Text(nickname, style: const TextStyle(
+              accountName: Text(args.nickname, style: const TextStyle(
                   fontWeight: FontWeight.w700, fontSize: 15)),
             ),
             ListTile(
@@ -54,7 +48,7 @@ class AdminDashboard extends StatelessWidget {
               onTap: () {
                 Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => AdminDashboard(isAdmin: isAdmin, username: username, nickname: nickname, desc: desc, profURL: profURL, isVerified: isVerified)
+                    MaterialPageRoute(builder: (context) => AdminDashboard()
                     ));
               },
             ),
@@ -67,16 +61,23 @@ class AdminDashboard extends StatelessWidget {
               onTap: () {
                 Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => MyProfile(isAdmin: isAdmin, username: username, description: desc, nickname: nickname, profileURL: profURL, isVerified: isVerified))
+                    MaterialPageRoute(builder: (context) => MyProfile(isAdmin: args.isAdmin, username: args.username, description: args.desc, nickname: args.nickname, profileURL: args.profURL, isVerified: args.isVerified))
                 );
               },
             ),
-            const ListTile(
-              trailing: Icon(Icons.exit_to_app, color: Colors.redAccent,),
-              title: Text("Log Out", style: TextStyle(
+            ListTile(
+              trailing: const Icon(Icons.exit_to_app, color: Colors.redAccent,),
+              title: const Text("Log Out", style: TextStyle(
                   fontWeight: FontWeight.w700,
                   color: Colors.redAccent
-              ),),)
+              ),),
+              onTap: () async {
+                final response = await request.logout("https://nutrious.up.railway.app/auth/logout/");
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyApp())
+                );
+              },)
           ],
         ),
       ),
@@ -90,6 +91,13 @@ class AdminDashboard extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 fontSize: 20
               ),),
+            ),
+            TextButton(
+              child: Text("GET"),
+              onPressed: () async {
+                final response = await request.get("https://nutrious.up.railway.app/json-user/");
+                print(response);
+              },
             )
           ],
         ),

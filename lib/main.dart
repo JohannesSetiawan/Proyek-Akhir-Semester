@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
         routes: {
           "/login": (BuildContext context) => const LoginPage(),
           "/user_dashboard": (BuildContext context) => const UserDashboard(),
+          "/admin_dashboard": (BuildContext context) => const AdminDashboard()
         },
       ),
     );

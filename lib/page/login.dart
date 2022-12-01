@@ -6,8 +6,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:flutter/gestures.dart';
-import 'package:nutrious/page/user_dashboard.dart';
-import 'package:nutrious/page/admin_dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -145,22 +143,52 @@ class _LoginPageState extends State<LoginPage> {
                                     final response = await request.login("https://nutrious.up.railway.app/auth/login/", {
                                       'username': username,
                                       'password': password1,
-                                    });
+                                    }).timeout(
+                                      Duration(seconds: 10),
+                                      onTimeout: () {
+                                        setState((){
+                                          isLoading=false;
+                                        });
+                                        return AlertDialog(
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(15.0))
+                                          ),
+                                          title: const Text("Login Failed", style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                          ),),
+                                          content: const Text("No internet connection"),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.all(5),
+                                                child: const Text("Back", style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                ),),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                    );
                                     setState((){
                                       isLoading=false;
                                     });
                                     if (request.loggedIn){
                                       // TODO: if user has waited for a long time, abort request and show dialog
                                       if (response["is_admin"]){
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => AdminDashboard(
-                                              isAdmin: response["is_admin"],
-                                              username: response["username"],
-                                              nickname: response["nickname"],
-                                              desc: response["description"],
-                                              profURL: response["profile_pict_url"],
-                                              isVerified: response["is_verified_user"],))
+                                        Navigator.of(context).pushReplacementNamed(
+                                            "/admin_dashboard",
+                                            arguments: UserArguments(
+                                                response["is_admin"],
+                                                response["username"],
+                                                response["nickname"],
+                                                response["description"],
+                                                response["profile_pict_url"],
+                                                response["is_verified_user"]
+                                            )
                                         );
                                       }
                                       else{

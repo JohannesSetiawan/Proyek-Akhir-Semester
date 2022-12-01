@@ -93,7 +93,7 @@ class DrawerMenu extends StatelessWidget {
                 color: Colors.redAccent
             ),),
             onTap: () async {
-              final response = await request.logout("https://nutrious.up.railway.app/logout");
+              final response = await request.logout("https://nutrious.up.railway.app/auth/logout/");
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => MyApp())
