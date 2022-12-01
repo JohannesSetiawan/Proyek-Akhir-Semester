@@ -10,60 +10,40 @@ String fundraisingToJson(List<Fundraising> data) => json.encode(List<dynamic>.fr
 
 class Fundraising {
   Fundraising({
-    required this.model,
     required this.pk,
-    required this.fields,
-  });
-
-  String model;
-  int pk;
-  Fields fields;
-
-  factory Fundraising.fromJson(Map<String, dynamic> json) => Fundraising(
-    model: json["model"],
-    pk: json["pk"],
-    fields: Fields.fromJson(json["fields"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "model": model,
-    "pk": pk,
-    "fields": fields.toJson(),
-  };
-}
-
-class Fields {
-  Fields({
-    required this.name,
     required this.opener,
+    required this.name,
     required this.description,
     required this.amountNeeded,
     required this.collectedFunds,
     required this.isVerified,
   });
 
+  int pk;
+  String opener;
   String name;
-  int opener;
   String description;
   int amountNeeded;
   int collectedFunds;
   bool isVerified;
 
-  factory Fields.fromJson(Map<String, dynamic> json) => Fields(
-    name: json["name"],
+  factory Fundraising.fromJson(Map<String, dynamic> json) => Fundraising(
+    pk: json["pk"],
     opener: json["opener"],
+    name: json["name"],
     description: json["description"],
     amountNeeded: json["amountNeeded"],
     collectedFunds: json["collectedFunds"],
-    isVerified: json["is_verified"],
+    isVerified: json["isVerified"],
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
+    "pk": pk,
     "opener": opener,
+    "name": name,
     "description": description,
     "amountNeeded": amountNeeded,
     "collectedFunds": collectedFunds,
-    "is_verified": isVerified,
+    "isVerified": isVerified,
   };
 }
