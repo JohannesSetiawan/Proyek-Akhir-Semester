@@ -3,7 +3,6 @@ import 'package:nutrious/page/drawer.dart';
 import 'package:nutrious/model/user_data.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:nutrious/page/admin_dashboard.dart';
 
 class UserDashboard extends StatefulWidget {
   const UserDashboard({Key? key}) : super(key: key);
@@ -15,6 +14,7 @@ class UserDashboard extends StatefulWidget {
 class _UserDashboardState extends State<UserDashboard> {
   String message = "";
   final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
@@ -145,23 +145,88 @@ class _UserDashboardState extends State<UserDashboard> {
                             },
                               validator: (String? value){
                                 if (value == null || value.isEmpty){
-                                  return 'Please fill the username field';
+                                  return 'Please fill the message field';
                                 }
                                 return null;
                               }
                           ),
                         ),
-                        Expanded(
+                        !isLoading ? Expanded(
                           flex: 1,
                           child: IconButton(
                             icon: const Icon(Icons.send, color: Colors.indigo,),
                             onPressed: () async {
-                              final response = await request.post(
-                                "https://nutrious.up.railway.app/add-message/",
-                              {
-                                "message": message
-                              });
+                              if (_formKey.currentState!.validate()) {
+                                setState((){
+                                  isLoading=true;
+                                });
+                                final response = await request.post(
+                                  "https://nutrious.up.railway.app/add-message/",
+                                {
+                                  "message": message
+                                }).timeout(const Duration(seconds: 10),
+                                    onTimeout: () {
+                                    setState((){
+                                      isLoading=false;
+                                    });
+                                    showDialog(context: context, builder: (context) {
+                                      return AlertDialog(
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(15.0))
+                                        ),
+                                        title: const Text("Error", style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                        ),),
+                                        content: const Text("Failed to send message. Please check your internet connection."),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.all(5),
+                                              child: const Text("Close", style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                              ),),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    });
+                                });
+                                setState((){
+                                  isLoading=false;
+                                });
+                                if (response != null){
+                                  showDialog(context: context, builder: (context) {
+                                    return AlertDialog(
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(15.0))
+                                      ),
+                                      content: Text(response["status"]),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.all(5),
+                                            child: const Text("Close", style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                            ),),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                                }
+                              }
                             },),
+                        ) : Expanded(
+                              flex: 1,
+                              child: Container(
+                                margin: const EdgeInsets.all(5),
+                                child: const CircularProgressIndicator()),
                         )
                       ],
                     ),
