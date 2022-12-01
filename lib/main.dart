@@ -1,12 +1,14 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:nutrious/page/list_fundraising.dart';
 import 'package:nutrious/page/login.dart';
-import 'package:nutrious/page/drawer.dart';
 import 'package:nutrious/page/user_dashboard.dart';
 import 'package:nutrious/page/admin_dashboard.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:nutrious/page/list_user.dart';
+import 'package:nutrious/page/list_message.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -41,7 +43,10 @@ class MyApp extends StatelessWidget {
         routes: {
           "/login": (BuildContext context) => const LoginPage(),
           "/user_dashboard": (BuildContext context) => const UserDashboard(),
-          "/admin_dashboard": (BuildContext context) => const AdminDashboard()
+          "/admin_dashboard": (BuildContext context) => const AdminDashboard(),
+          "/user_list": (BuildContext context) => const UserList(),
+          "/fundraising_list": (BuildContext context) => const FundraisingList(),
+          "/message_list": (BuildContext context) => const MessageList(),
         },
       ),
     );
@@ -75,15 +80,31 @@ class _MyHomePageState extends State<MyHomePage> {
               ),),
             ),
             TextButton(
-              // TODO: add route, use pushReplacementNamed
-              child: const Text("Log In"),
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    side: const BorderSide(color: Colors.indigo)
+                  )
+                )
+              ),
               onPressed: (){
                 Navigator.of(context).pushReplacementNamed("/login");
               },
+              child: const Text("Log In"),
             ),
             TextButton(
+              style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          side: const BorderSide(color: Colors.indigo)
+                      )
+                  )
+              ),
               child: const Text("Register"),
               onPressed: (){
+                launchUrl(Uri.parse("https://nutrious.up.railway.app/register/"));
               },
             )
           ],

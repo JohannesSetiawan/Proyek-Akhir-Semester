@@ -144,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                                       'username': username,
                                       'password': password1,
                                     }).timeout(
-                                      Duration(seconds: 10),
+                                      const Duration(seconds: 10),
                                       onTimeout: () {
                                         setState((){
                                           isLoading=false;
@@ -156,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                                           title: const Text("Login Failed", style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                           ),),
-                                          content: const Text("No internet connection"),
+                                          content: const Text("Check your internet connection."),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () {
@@ -164,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                                               },
                                               child: Container(
                                                 padding: const EdgeInsets.all(5),
-                                                child: const Text("Back", style: TextStyle(
+                                                child: const Text("Close", style: TextStyle(
                                                   fontWeight: FontWeight.w700,
                                                 ),),
                                               ),
@@ -177,7 +177,6 @@ class _LoginPageState extends State<LoginPage> {
                                       isLoading=false;
                                     });
                                     if (request.loggedIn){
-                                      // TODO: if user has waited for a long time, abort request and show dialog
                                       if (response["is_admin"]){
                                         Navigator.of(context).pushReplacementNamed(
                                             "/admin_dashboard",
@@ -210,10 +209,10 @@ class _LoginPageState extends State<LoginPage> {
                                           shape: const RoundedRectangleBorder(
                                               borderRadius: BorderRadius.all(Radius.circular(15.0))
                                           ),
-                                          title: const Text("Login Failed", style: TextStyle(
+                                          title: const Text("Log In Failed", style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                           ),),
-                                          content: const Text("Your username or password is wrong"),
+                                          content: const Text("Your username or password is wrong."),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () {
