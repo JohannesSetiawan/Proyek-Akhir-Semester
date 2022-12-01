@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nutrious/page/user_dashboard.dart';
+import 'package:nutrious/model/user_data.dart';
 
 class DrawerMenu extends StatelessWidget {
   final isAdmin;
@@ -22,6 +23,7 @@ class DrawerMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Drawer(
       child: Column(
         children: [
@@ -29,7 +31,7 @@ class DrawerMenu extends StatelessWidget {
             currentAccountPicture: CircleAvatar(
               radius: 50,
               backgroundImage: NetworkImage(
-                "${profileURL}",
+                "$profileURL",
               ),
             ),
             accountEmail: isVerified ? const Text("Verified") : const Text("Not Verified"),
@@ -58,9 +60,16 @@ class DrawerMenu extends StatelessWidget {
                 color: Colors.indigo
             ),),
             onTap: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => UserDashboard(desc: description, isAdmin: isAdmin, isVerified: isVerified, nickname: nickname, profURL: profileURL, username: username,))
+              Navigator.of(context).pushReplacementNamed(
+                  "/user_dashboard",
+                  arguments: UserArguments(
+                      isAdmin,
+                      username,
+                      nickname,
+                      description,
+                      profileURL,
+                      isVerified
+                  )
               );
             },
           ),
@@ -77,18 +86,19 @@ class DrawerMenu extends StatelessWidget {
               );
             },
           ),
-          const ListTile(
+          ListTile(
             trailing: Icon(Icons.exit_to_app, color: Colors.redAccent,),
             title: Text("Log Out", style: TextStyle(
                 fontWeight: FontWeight.w700,
                 color: Colors.redAccent
             ),),
-            //onTap: () async {
-            //  Navigator.pushReplacement(
-            //      context,
-            //      MaterialPageRoute(builder: (context) => const MyApp())
-            //  );
-           // },
+            onTap: () async {
+              final response = await request.logout("https://nutrious.up.railway.app/auth/logout/");
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyApp())
+              );
+            },
           ),
         ],
       ),

@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:nutrious/page/drawer.dart';
+import 'package:nutrious/model/user_data.dart';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:nutrious/page/admin_dashboard.dart';
 
-class UserDashboard extends StatelessWidget {
-  final isAdmin;
-  final username;
-  final nickname;
-  final desc;
-  final profURL;
-  final isVerified;
-  const UserDashboard({Key? key,
-    required this.isAdmin,
-    required this.username,
-    required this.nickname,
-    required this.desc,
-    required this.profURL,
-    required this.isVerified}) : super(key: key);
+class UserDashboard extends StatefulWidget {
+  const UserDashboard({Key? key}) : super(key: key);
 
   @override
+  State<UserDashboard> createState() => _UserDashboardState();
+}
+
+class _UserDashboardState extends State<UserDashboard> {
+  String message = "";
+  final _formKey = GlobalKey<FormState>();
+  @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    final args = ModalRoute.of(context)!.settings.arguments as UserArguments;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -32,7 +33,13 @@ class UserDashboard extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.indigo)
       ),
-      drawer: DrawerMenu(isAdmin: isAdmin, username: username, description: desc, nickname: nickname, profileURL: profURL, isVerified: isVerified,),
+      drawer: DrawerMenu(
+        isAdmin: args.isAdmin,
+        username: args.username,
+        description: args.desc,
+        nickname: args.nickname,
+        profileURL: args.profURL,
+        isVerified: args.isVerified,),
       body: Center(
         child: Column(
           children: [
@@ -51,7 +58,7 @@ class UserDashboard extends StatelessWidget {
                       )
                     ),
                     TextSpan(
-                      text: nickname,
+                      text: args.nickname,
                       style: const TextStyle(
                         fontWeight: FontWeight.w700,
                         color: Colors.black,
@@ -113,6 +120,7 @@ class UserDashboard extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.w700)),
                   const SizedBox(height: 8),
                   Form(
+                    key: _formKey,
                     child: Row(
                       children: [
                         Expanded(
@@ -125,14 +133,34 @@ class UserDashboard extends StatelessWidget {
                               contentPadding: EdgeInsets.fromLTRB(8, 2, 8, 2),
                               hintText: "Message",
                             ),
+                            onSaved: (String? value){
+                              setState(() {
+                                message = value!;
+                              });
+                            },
+                            onChanged: (String? value){
+                              setState(() {
+                                message = value!;
+                              });
+                            },
+                              validator: (String? value){
+                                if (value == null || value.isEmpty){
+                                  return 'Please fill the username field';
+                                }
+                                return null;
+                              }
                           ),
                         ),
                         Expanded(
                           flex: 1,
                           child: IconButton(
                             icon: const Icon(Icons.send, color: Colors.indigo,),
-                            onPressed: (){
-                              // post to django
+                            onPressed: () async {
+                              final response = await request.post(
+                                "https://nutrious.up.railway.app/add-message/",
+                              {
+                                "message": message
+                              });
                             },),
                         )
                       ],
@@ -172,8 +200,8 @@ class UserDashboard extends StatelessWidget {
                                 fontWeight: FontWeight.w700
                           ),),
                         ),
-                        onTap: (){
-                          // insert navigator
+                        onTap: () {
+
                         },
                       ),
                     ),

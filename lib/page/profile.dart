@@ -55,7 +55,7 @@ class MyProfile extends StatelessWidget {
               onTap: () {
                 Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => AdminDashboard(isAdmin: isAdmin, username: username, nickname: nickname, desc: description, profURL: profileURL, isVerified: isVerified)
+                    MaterialPageRoute(builder: (context) => const AdminDashboard()
                 ));
               },
             ),
