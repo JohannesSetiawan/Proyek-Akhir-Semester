@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nutrious/page/profile.dart';
+import 'package:nutrious/page/home/profile.dart';
 import 'package:nutrious/model/user_data.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
