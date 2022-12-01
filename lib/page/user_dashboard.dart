@@ -13,9 +13,11 @@ class UserDashboard extends StatefulWidget {
 }
 
 class _UserDashboardState extends State<UserDashboard> {
+  String message = "";
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     final args = ModalRoute.of(context)!.settings.arguments as UserArguments;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -31,7 +33,13 @@ class _UserDashboardState extends State<UserDashboard> {
         ),
         iconTheme: const IconThemeData(color: Colors.indigo)
       ),
-      drawer: DrawerMenu(isAdmin: args.isAdmin, username: args.username, description: args.desc, nickname: args.nickname, profileURL: args.profURL, isVerified: args.isVerified,),
+      drawer: DrawerMenu(
+        isAdmin: args.isAdmin,
+        username: args.username,
+        description: args.desc,
+        nickname: args.nickname,
+        profileURL: args.profURL,
+        isVerified: args.isVerified,),
       body: Center(
         child: Column(
           children: [
@@ -125,14 +133,34 @@ class _UserDashboardState extends State<UserDashboard> {
                               contentPadding: EdgeInsets.fromLTRB(8, 2, 8, 2),
                               hintText: "Message",
                             ),
+                            onSaved: (String? value){
+                              setState(() {
+                                message = value!;
+                              });
+                            },
+                            onChanged: (String? value){
+                              setState(() {
+                                message = value!;
+                              });
+                            },
+                              validator: (String? value){
+                                if (value == null || value.isEmpty){
+                                  return 'Please fill the username field';
+                                }
+                                return null;
+                              }
                           ),
                         ),
                         Expanded(
                           flex: 1,
                           child: IconButton(
                             icon: const Icon(Icons.send, color: Colors.indigo,),
-                            onPressed: (){
-                              // post to django
+                            onPressed: () async {
+                              final response = await request.post(
+                                "https://nutrious.up.railway.app/add-message/",
+                              {
+                                "message": message
+                              });
                             },),
                         )
                       ],
