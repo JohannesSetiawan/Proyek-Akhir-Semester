@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nutrious/page/admin_dashboard.dart';
 import 'package:nutrious/page/drawer.dart';
+
+import 'package:nutrious/model/user_data.dart';
 
 class MyProfile extends StatelessWidget {
   final isAdmin;
@@ -53,10 +54,17 @@ class MyProfile extends StatelessWidget {
                   color: Colors.indigo
               ),),
               onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AdminDashboard()
-                ));
+                Navigator.of(context).pushReplacementNamed(
+                    "/admin_dashboard",
+                    arguments: UserArguments(
+                        isAdmin,
+                        username,
+                        nickname,
+                        description,
+                        profileURL,
+                        isVerified
+                    )
+                );
               },
             ),
             ListTile(

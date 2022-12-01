@@ -3,7 +3,6 @@ import 'package:nutrious/page/profile.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:nutrious/page/user_dashboard.dart';
 import 'package:nutrious/model/user_data.dart';
 
 class DrawerMenu extends StatelessWidget {
@@ -74,8 +73,8 @@ class DrawerMenu extends StatelessWidget {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.person, color: Colors.indigo,),
-            title: Text("View Profile", style: TextStyle(
+            trailing: const Icon(Icons.person, color: Colors.indigo,),
+            title: const Text("View Profile", style: TextStyle(
               fontWeight: FontWeight.w700,
               color: Colors.indigo
             ),),
@@ -88,16 +87,18 @@ class DrawerMenu extends StatelessWidget {
           ),
           ListTile(
             trailing: Icon(Icons.exit_to_app, color: Colors.redAccent,),
-            title: Text("Log Out", style: TextStyle(
+            title: const Text("Log Out", style: TextStyle(
                 fontWeight: FontWeight.w700,
                 color: Colors.redAccent
             ),),
             onTap: () async {
               final response = await request.logout("https://nutrious.up.railway.app/auth/logout/");
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyApp())
-              );
+              if (response != null){
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyApp())
+                );
+              }
             },
           ),
         ],
