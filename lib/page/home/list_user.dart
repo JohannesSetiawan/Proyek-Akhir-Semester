@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nutrious/page/home/user_detail.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:nutrious/model/user.dart';
@@ -78,48 +79,57 @@ class _UserListState extends State<UserList> {
                                 )
                               ]
                           ),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(snapshot.data![index].fields.username, textAlign: TextAlign.left, style: const TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 20
-                                  ),),
+                          child: InkWell(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                UserDetail(id: snapshot.data![index].pk.toString(), detail: snapshot.data![index].fields)));
+                            },
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(snapshot.data![index].fields.username,
+                                      textAlign: TextAlign.left, overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 21
+                                    ),),
+                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 5,
-                                      child: Text(snapshot.data![index].fields.nickname),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Text("ID: ${snapshot.data![index].pk.toString()}"),
-                                    ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: snapshot.data![index].fields.isVerifiedUser ?
-                                        const Text("Verified",
-                                          textAlign: TextAlign.right, style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.green
-                                          ),) :
-                                        const Text("Not Verified",
-                                          textAlign: TextAlign.right, style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.red
-                                          ),),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
+                                Expanded(
+                                  flex: 1,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 5,
+                                        child: Text(snapshot.data![index].fields.nickname,
+                                          overflow: TextOverflow.ellipsis),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text("ID: ${snapshot.data![index].pk.toString()}"),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: snapshot.data![index].fields.isVerifiedUser ?
+                                          const Text("Verified",
+                                            textAlign: TextAlign.right, style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.green
+                                            ),) :
+                                          const Text("Not Verified",
+                                            textAlign: TextAlign.right, style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.red
+                                            ),),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           )
                         ),
                       );

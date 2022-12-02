@@ -10,48 +10,28 @@ String messageToJson(List<Message> data) => json.encode(List<dynamic>.from(data.
 
 class Message {
   Message({
-    required this.model,
     required this.pk,
-    required this.fields,
+    required this.sender,
+    required this.message,
+    required this.time,
   });
 
-  String model;
   int pk;
-  Fields fields;
+  String sender;
+  String message;
+  DateTime time;
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-    model: json["model"],
     pk: json["pk"],
-    fields: Fields.fromJson(json["fields"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "model": model,
-    "pk": pk,
-    "fields": fields.toJson(),
-  };
-}
-
-class Fields {
-  Fields({
-    required this.user,
-    required this.message,
-    required this.timeSent,
-  });
-
-  int user;
-  String message;
-  DateTime timeSent;
-
-  factory Fields.fromJson(Map<String, dynamic> json) => Fields(
-    user: json["user"],
+    sender: json["sender"],
     message: json["message"],
-    timeSent: DateTime.parse(json["time_sent"]),
+    time: DateTime.parse(json["time"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "user": user,
+    "pk": pk,
+    "sender": sender,
     "message": message,
-    "time_sent": timeSent.toIso8601String(),
+    "time": time.toIso8601String(),
   };
 }

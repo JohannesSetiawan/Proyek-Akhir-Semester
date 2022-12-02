@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nutrious/page/home/message_detail.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:nutrious/model/message.dart';
@@ -21,9 +22,9 @@ class _MessageListState extends State<MessageList> {
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     Future<List<Message>> fetchMessage() async {
-      final response = await request.get("https://nutrious.up.railway.app/json-message/");
+      final response = await request.get("https://nutrious.up.railway.app/json-message-name/");
       List<Message> listMessage = [];
-      for (var message in response){
+      for (var message in response["data"]){
         if (message != null){
           listMessage.add(Message.fromJson(message));
         }
@@ -50,7 +51,7 @@ class _MessageListState extends State<MessageList> {
               flex: 1,
               child: Container(
                 margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: const Text("List of Fundraising(s)", style: TextStyle(
+                child: const Text("List of Message(s)", style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 20
                 ),),
@@ -65,7 +66,7 @@ class _MessageListState extends State<MessageList> {
                     return const Center(child: CircularProgressIndicator());
                   } else{
                     if (!snapshot.hasData) {
-                      return const Text("No Opened Fundraising");
+                      return const Text("No Message");
                     } else{
                       return ListView.builder(
                         padding: const EdgeInsets.all(7),
@@ -84,34 +85,43 @@ class _MessageListState extends State<MessageList> {
                                   )
                                 ]
                             ),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(snapshot.data![index].fields.message, textAlign: TextAlign.left, style: const TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 20
-                                    ),),
+                            child: InkWell(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                    MessageDetail(detail: snapshot.data![index])));
+                              },
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(snapshot.data![index].message,
+                                        textAlign: TextAlign.left,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 20
+                                      ),),
+                                    ),
                                   ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text("Sender ID: ${snapshot.data![index].fields.user.toString()}"),
-                                      ),
-                                      Expanded(
-                                        flex: 7,
-                                        child: Text(formatDateTime(snapshot.data![index].fields.timeSent.toLocal()))
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
+                                  Expanded(
+                                    flex: 1,
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 5,
+                                          child: Text("Sent by ${snapshot.data![index].sender}"),
+                                        ),
+                                        Expanded(
+                                          flex: 3,
+                                          child: Text(formatDateTime(snapshot.data![index].time.toLocal()), textAlign: TextAlign.right,)
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             )
                         ),
                       );
