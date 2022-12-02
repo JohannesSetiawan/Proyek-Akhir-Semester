@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:nutrious/page/list_fundraising.dart';
-import 'package:nutrious/page/login.dart';
-import 'package:nutrious/page/user_dashboard.dart';
-import 'package:nutrious/page/admin_dashboard.dart';
+import 'package:nutrious/page/home/list_fundraising.dart';
+import 'package:nutrious/page/home/login.dart';
+import 'package:nutrious/page/home/user_dashboard.dart';
+import 'package:nutrious/page/home/admin_dashboard.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:nutrious/page/list_user.dart';
-import 'package:nutrious/page/list_message.dart';
+import 'package:nutrious/page/home/list_user.dart';
+import 'package:nutrious/page/home/list_message.dart';
 
 
 void main() {
