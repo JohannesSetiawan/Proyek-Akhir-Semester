@@ -6,6 +6,7 @@ import 'package:nutrious/model/fundraising.dart';
 import 'package:nutrious/util/curr_converter.dart';
 import '../../model/user_data.dart';
 import '../home/drawer.dart';
+import 'create_donation.dart';
 
 class DonationList extends StatefulWidget {
   const DonationList({Key? key}) : super(key: key);
@@ -137,8 +138,27 @@ class _DonationListState extends State<DonationList> {
                   }
                 },
               ),
-            )
-            
+            ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: TextButton(
+                  child: const Text(
+                    "Open Donation",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                  ),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) =>
+                            OpenDonation(args: args)));
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),
