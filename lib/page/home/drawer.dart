@@ -58,8 +58,21 @@ class DrawerMenu extends StatelessWidget {
           const ListTile(
             title: Text("Food-Sharing"),
           ),
-          const ListTile(
+          ListTile(
             title: Text("Calorie Tracker"),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(
+                  "/calorietracker_page",
+                  arguments: UserArguments(
+                      isAdmin,
+                      username,
+                      nickname,
+                      description,
+                      profileURL,
+                      isVerified
+                  )
+              );
+            },
           ),
           const ListTile(
             title: Text("Food Recipes"),
