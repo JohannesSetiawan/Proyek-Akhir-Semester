@@ -44,9 +44,16 @@ class DrawerMenu extends StatelessWidget {
           ListTile(
             title: Text("Fundraising"),
             onTap: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => DonationList())
+              Navigator.of(context).pushReplacementNamed(
+                  "/donation_list",
+                  arguments: UserArguments(
+                      isAdmin,
+                      username,
+                      nickname,
+                      description,
+                      profileURL,
+                      isVerified
+                  )
               );
             },
           ),

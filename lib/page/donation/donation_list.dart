@@ -18,6 +18,7 @@ class _DonationListState extends State<DonationList> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
+    final args = ModalRoute.of(context)!.settings.arguments as UserArguments;
     Future<List<Fundraising>> fetchDonation() async {
       final response = await request.get("https://nutrious.up.railway.app/donation/json-verified/");
       List<Fundraising> listDonation = [];
@@ -41,6 +42,13 @@ class _DonationListState extends State<DonationList> {
           ),
           iconTheme: const IconThemeData(color: Colors.indigo)
       ),
+      drawer: DrawerMenu(
+        isAdmin: args.isAdmin,
+        username: args.username,
+        description: args.desc,
+        nickname: args.nickname,
+        profileURL: args.profURL,
+        isVerified: args.isVerified,),
       body: Center(
         child: Column(
           children: [
@@ -48,7 +56,7 @@ class _DonationListState extends State<DonationList> {
               flex: 1,
               child: Container(
                 margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: const Text("Please click the respective donation(s) to go \n to the detail page and donate", style: TextStyle(
+                child: const Text("Click the donation(s) to donate", style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 20
                 ),),
@@ -84,8 +92,9 @@ class _DonationListState extends State<DonationList> {
                             ),
                             child: InkWell(
                               onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                    DonationDetail(detail: snapshot.data![index])));
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) =>
+                                    DonationDetail(detail: snapshot.data![index], args: args)));
                               },
                               child: Column(
                                 children: [
@@ -129,6 +138,7 @@ class _DonationListState extends State<DonationList> {
                 },
               ),
             )
+            
           ],
         ),
       ),
