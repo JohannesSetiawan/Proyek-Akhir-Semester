@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:nutrious/page/home/profile.dart';
 import 'package:nutrious/model/user_data.dart';
@@ -84,7 +86,7 @@ class AdminDashboard extends StatelessWidget {
                 if (response != null){
                   Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => MyApp())
+                      MaterialPageRoute(builder: (context) => const MyApp())
                   );
                 }
               },)
