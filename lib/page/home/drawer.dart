@@ -7,6 +7,8 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nutrious/model/user_data.dart';
 
+import '../donation/donation_list.dart';
+
 class DrawerMenu extends StatelessWidget {
   final isAdmin;
   final username;
@@ -39,8 +41,14 @@ class DrawerMenu extends StatelessWidget {
             accountName: Text(nickname, style: const TextStyle(
                 fontWeight: FontWeight.w700, fontSize: 15)),
           ),
-          const ListTile(
+          ListTile(
             title: Text("Fundraising"),
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => DonationList())
+              );
+            },
           ),
           const ListTile(
             title: Text("Food-Sharing"),
