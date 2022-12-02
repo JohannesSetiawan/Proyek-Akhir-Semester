@@ -5,7 +5,7 @@ import 'package:nutrious/util/curr_converter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'donation_list.dart';
+import '../../model/user_data.dart';
 
 double getPercentage(needed, collected){
   if (collected >= needed) {
@@ -25,8 +25,9 @@ int getRemaining(needed, collected){
 
 class DonationDetail extends StatefulWidget {
   final detail;
+  final args;
 
-  const DonationDetail({super.key, required this.detail});
+  const DonationDetail({super.key, required this.detail, required this.args});
 
   @override
   State<DonationDetail> createState() => _DonationDetailState();
@@ -53,6 +54,7 @@ class _DonationDetailState extends State<DonationDetail> {
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     final detail = widget.detail;
+    final args = widget.args;
     return Scaffold(
       appBar: AppBar(
           backgroundColor: const Color(0xFFF0FFFF),
@@ -267,12 +269,12 @@ class _DonationDetailState extends State<DonationDetail> {
 
                                     // Saat kosong
                                     if (value == null || value.isEmpty) {
-                                      return 'Please fill this field out';
+                                      return 'Must be filled';
                                     }
 
                                     // Saat bukan angka
                                     if (!isNumeric(value)) {
-                                      return 'Please make sure you inserted a number into this field';
+                                      return 'Must be a number';
                                     }
                                     return null;
                                   },
@@ -290,10 +292,17 @@ class _DonationDetailState extends State<DonationDetail> {
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     donate(request, detail.pk , nominal);
-                                    print(nominal);
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const DonationList()),
+                                    //print(nominal);
+                                    Navigator.of(context).pushReplacementNamed(
+                                        "/donation_list",
+                                        arguments: UserArguments(
+                                            args.isAdmin,
+                                            args.username,
+                                            args.nickname,
+                                            args.desc,
+                                            args.profURL,
+                                            args.isVerified
+                                        )
                                     );
                                   }
                                 },
