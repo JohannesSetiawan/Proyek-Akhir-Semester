@@ -7,22 +7,29 @@ import 'package:nutrious/util/curr_converter.dart';
 import '../../model/user_data.dart';
 import '../home/drawer.dart';
 import 'create_donation.dart';
-import 'opened_donation_list.dart';
 
-class DonationList extends StatefulWidget {
-  const DonationList({Key? key}) : super(key: key);
+class OpenedDonationList extends StatefulWidget {
+  final args;
+  const OpenedDonationList({Key? key, required this.args}) : super(key: key);
 
   @override
-  State<DonationList> createState() => _DonationListState();
+  State<OpenedDonationList> createState() => _OpenedDonationListState();
 }
 
-class _DonationListState extends State<DonationList> {
+class _OpenedDonationListState extends State<OpenedDonationList> {
+
+  void delete(request, id) async {
+    String pk = id.toString();
+    var response = await request.post('https://nutrious.up.railway.app/donation/close/',
+        {"id" : pk});
+  }
+
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    final args = ModalRoute.of(context)!.settings.arguments as UserArguments;
+    final args = widget.args;
     Future<List<Fundraising>> fetchDonation() async {
-      final response = await request.get("https://nutrious.up.railway.app/donation/json-verified/");
+      final response = await request.get("https://nutrious.up.railway.app/donation/json-by-user/");
       List<Fundraising> listDonation = [];
       for (var fundraising in response["data"]){
         if (fundraising != null){
@@ -58,7 +65,7 @@ class _DonationListState extends State<DonationList> {
               flex: 1,
               child: Container(
                 margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: const Text("Click the donation(s) to donate", style: TextStyle(
+                child: const Text("List of Your Opened Donation(s)", style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 20
                 ),),
@@ -81,7 +88,7 @@ class _DonationListState extends State<DonationList> {
                         itemBuilder: (_, index) => Container(
                             padding: const EdgeInsets.all(10),
                             margin: const EdgeInsets.all(5),
-                            height: 100,
+                            height: 150,
                             decoration: BoxDecoration(
                                 color:Colors.white,
                                 borderRadius: BorderRadius.circular(10),
@@ -92,12 +99,7 @@ class _DonationListState extends State<DonationList> {
                                   )
                                 ]
                             ),
-                            child: InkWell(
-                              onTap: (){
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) =>
-                                    DonationDetail(detail: snapshot.data![index], args: args)));
-                              },
+
                               child: Column(
                                 children: [
                                   Expanded(
@@ -108,80 +110,92 @@ class _DonationListState extends State<DonationList> {
                                         textAlign: TextAlign.left,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 20
-                                      ),),
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 20
+                                        ),),
                                     ),
                                   ),
                                   Expanded(
                                     flex: 1,
                                     child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text("Opened by ${snapshot.data![index].opener}")),
+                                      alignment: Alignment.topLeft,
+                                      child: Text(snapshot.data![index].description,
+                                        textAlign: TextAlign.left,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 20
+                                        ),),
+                                    ),
                                   ),
                                   Expanded(
                                     flex: 1,
                                     child: Row(
                                       children: [
                                         Expanded(
-                                          flex: 7,
+                                          flex: 10,
                                           child: Text(CurrencyFormat.convertToIdr(snapshot.data![index].amountNeeded, 2)),
                                         ),
+                                        Expanded(
+                                          flex: 3,
+                                          child: snapshot.data![index].isVerified ?
+                                          const Text("Verified",
+                                            textAlign: TextAlign.right, style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.green
+                                            ),) :
+                                          const Text("Not Verified",
+                                            textAlign: TextAlign.right, style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.red
+                                            ),),
+                                        )
                                       ],
                                     ),
-                                  )
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text("Collected: " + snapshot.data![index].collectedFunds.toString(),
+                                        textAlign: TextAlign.left,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 15
+                                        ),),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: TextButton(
+                                        child: const Text(
+                                          "Close donation",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all(Colors.red),
+                                        ),
+                                        onPressed: () {
+                                          delete(request, snapshot.data![index].pk);
+                                          Navigator.push(context,
+                                              MaterialPageRoute(builder: (context) =>
+                                                  OpenedDonationList(args: args)));
+                                        },
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             )
-                        ),
                       );
                     }
                   }
                 },
               ),
-            ),
-
-            // Jika merupakan user yg terverifikasi
-            if(args.isVerified)
-            Expanded(
-              flex: 1,
-              child: Container(
-                margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child:Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      child: const Text(
-                        "Open Donation",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.blue),
-                      ),
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) =>
-                                OpenDonation(args: args)));
-                      },
-                    ),
-                    TextButton(
-                      child: const Text(
-                        "See opened donation(s)",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.blue),
-                      ),
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) =>
-                                OpenedDonationList(args: args)));
-                      },
-                    ),
-                  ],
-                )
-              ),
-            ),
+            )
           ],
         ),
       ),

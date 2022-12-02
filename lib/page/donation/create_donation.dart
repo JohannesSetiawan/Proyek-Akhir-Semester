@@ -182,7 +182,7 @@ class _OpenDonationState extends State<OpenDonation> {
 
                 TextButton(
                   child: const Text(
-                    "Simpan",
+                    "Create",
                     style: TextStyle(color: Colors.white),
                   ),
                   style: ButtonStyle(
