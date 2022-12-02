@@ -96,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: const Text("Log In"),
             ),
+            SizedBox(height: 2,),
             TextButton(
               style: ButtonStyle(
                   shape: MaterialStateProperty.all(
