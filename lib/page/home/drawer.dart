@@ -39,14 +39,40 @@ class DrawerMenu extends StatelessWidget {
             accountName: Text(nickname, style: const TextStyle(
                 fontWeight: FontWeight.w700, fontSize: 15)),
           ),
-          const ListTile(
-            title: Text("Fundraising"),
+          ListTile(
+            title: const Text("Fundraising"),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(
+                  "/donation_list",
+                  arguments: UserArguments(
+                      isAdmin,
+                      username,
+                      nickname,
+                      description,
+                      profileURL,
+                      isVerified
+                  )
+              );
+            },
           ),
           const ListTile(
             title: Text("Food-Sharing"),
           ),
-          const ListTile(
+          ListTile(
             title: Text("Calorie Tracker"),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(
+                  "/calorietracker_page",
+                  arguments: UserArguments(
+                      isAdmin,
+                      username,
+                      nickname,
+                      description,
+                      profileURL,
+                      isVerified
+                  )
+              );
+            },
           ),
           const ListTile(
             title: Text("Food Recipes"),
