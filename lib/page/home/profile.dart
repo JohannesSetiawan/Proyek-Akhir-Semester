@@ -1,9 +1,11 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:nutrious/page/home/drawer.dart';
-
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:nutrious/model/user_data.dart';
+import 'package:nutrious/main.dart';
 
 class MyProfile extends StatelessWidget {
   final isAdmin;
@@ -22,6 +24,7 @@ class MyProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
           backgroundColor: const Color(0xFFF0FFFF),
@@ -82,12 +85,21 @@ class MyProfile extends StatelessWidget {
                 );
               },
             ),
-            const ListTile(
-              trailing: Icon(Icons.exit_to_app, color: Colors.redAccent,),
-              title: Text("Log Out", style: TextStyle(
+            ListTile(
+              trailing: const Icon(Icons.exit_to_app, color: Colors.redAccent,),
+              title: const Text("Log Out", style: TextStyle(
                   fontWeight: FontWeight.w700,
                   color: Colors.redAccent
-              ),),)
+              ),),
+              onTap: () async {
+                final response = await request.logout("https://nutrious.up.railway.app/auth/logout/");
+                if (response != null){
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const MyApp())
+                  );
+                }
+              },)
           ],
         ),
       ): DrawerMenu(isAdmin: isAdmin, username: username, description: description, nickname: nickname, profileURL: profileURL, isVerified: isVerified,),
