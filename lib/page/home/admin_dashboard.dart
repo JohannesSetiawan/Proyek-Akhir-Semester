@@ -94,125 +94,117 @@ class AdminDashboard extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(5.0),
-              margin: const EdgeInsets.all(10),
-              child: const Text("Admin Dashboard", style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 20
-              ),),
-            ),
-            Expanded(
-              child: Container(
+          child: ListView(
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  padding: const EdgeInsets.all(5.0),
+                  margin: const EdgeInsets.all(10),
+                  child: const Text("Admin Dashboard", style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20
+                  ),),
+                ),
+              ),
+              Container(
                 margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                 padding: const EdgeInsets.all(5),
                 child: Column(
                   children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: const BorderRadius.all(Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 1,
-                              )
-                            ]
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 1,
+                            )
+                          ]
+                      ),
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(10),
+                      height: 100,
+                      child: InkWell(
+                        child: const Center(
+                          child: Text("List of User(s)",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20
+                            ),),
                         ),
-                        padding: const EdgeInsets.all(5),
-                        margin: const EdgeInsets.all(10),
-                        height: 50,
-                        child: InkWell(
-                          child: const Center(
-                            child: Text("List of User(s)",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 20
-                              ),),
-                          ),
-                          onTap: () {
-                            Navigator.of(context).pushNamed("/user_list");
-                          },
-                        ),
+                        onTap: () {
+                          Navigator.of(context).pushNamed("/user_list");
+                        },
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: const BorderRadius.all(Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 1,
-                              )
-                            ]
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 1,
+                            )
+                          ]
+                      ),
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(10),
+                      height: 100,
+                      child: InkWell(
+                        child: const Center(
+                          child: Text("List of Fundraising(s)",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20
+                            ),),
                         ),
-                        padding: const EdgeInsets.all(5),
-                        margin: const EdgeInsets.all(10),
-                        height: 50,
-                        child: InkWell(
-                          child: const Center(
-                            child: Text("List of Fundraising(s)",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 20
-                              ),),
-                          ),
-                          onTap: () {
-                            Navigator.of(context).pushNamed("/fundraising_list");
-                          },
-                        ),
+                        onTap: () {
+                          Navigator.of(context).pushNamed("/fundraising_list");
+                        },
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: const BorderRadius.all(Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 1,
-                              )
-                            ]
-                        ),
-                        padding: const EdgeInsets.all(5),
-                        margin: const EdgeInsets.all(10),
-                        height: 50,
-                        child: InkWell(
-                          child: const Center(
-                            child: Text("List of Message(s)",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 20
-                              ),),
-                          ),
-                          onTap: () {
-                            Navigator.of(context).pushNamed("/message_list");
-                          },
-                        ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 1,
+                            )
+                          ]
                       ),
-                    )
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(10),
+                      height: 100,
+                      child: InkWell(
+                        child: const Center(
+                          child: Text("List of Message(s)",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20
+                            ),),
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pushNamed("/message_list");
+                        },
+                      ),
+                    ),
                   ],
                 ),
               )
-            )
-          ],
+            ],
+          ),
         ),
-      ),
     );
   }
 }

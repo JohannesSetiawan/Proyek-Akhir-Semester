@@ -41,143 +41,172 @@ class _UserDashboardState extends State<UserDashboard> {
         profileURL: args.profURL,
         isVerified: args.isVerified,),
       body: Center(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(5),
-              margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    const TextSpan(
-                      text: "Hello, ",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Poppins',
-                        fontSize: 20,
-                      )
-                    ),
-                    TextSpan(
-                      text: args.nickname,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                        fontFamily: 'Poppins',
-                        fontSize: 20,
-                      )
-                    ),
-                    const TextSpan(
-                      text: "!",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Poppins',
-                        fontSize: 20,
-                      )
-                    )
-                  ]
-                ),
-              )
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(30),
-                        child: Image.asset('images/bg-header.png'),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        child: Column(
-                          children: const [
-                            Center(child: Text("Welcome to Nutrious!", textAlign: TextAlign.center, style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white
-                            ),)),
-                            SizedBox(height: 3,),
-                            Center(child: Text("With great nutrition, comes great health. So, help yourself and others to achieve good health!", textAlign: TextAlign.center, style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.white
-                            ),))
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(5),
-              padding: const EdgeInsets.all(5),
-              child: Column(
-                children: [
-                  const Text("Leave a Message for Our Administrator",
-                      style: TextStyle(fontWeight: FontWeight.w700)),
-                  const SizedBox(height: 8),
-                  Form(
-                    key: _formKey,
-                    child: Row(
+        child: Expanded(
+          child: ListView(
+            children: [
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: RichText(
+                    text: TextSpan(
                       children: [
-                        Expanded(
-                          flex: 8,
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10))
-                              ),
-                              contentPadding: EdgeInsets.fromLTRB(8, 2, 8, 2),
-                              hintText: "Message",
-                            ),
-                            onSaved: (String? value){
-                              setState(() {
-                                message = value!;
-                              });
-                            },
-                            onChanged: (String? value){
-                              setState(() {
-                                message = value!;
-                              });
-                            },
-                              validator: (String? value){
-                                if (value == null || value.isEmpty){
-                                  return 'Please fill the message field';
-                                }
-                                return null;
-                              }
-                          ),
+                        const TextSpan(
+                          text: "Hello, ",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 20,
+                          )
                         ),
-                        !isLoading ? Expanded(
-                          flex: 1,
-                          child: IconButton(
-                            icon: const Icon(Icons.send, color: Colors.indigo,),
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                setState((){
-                                  isLoading=true;
+                        TextSpan(
+                          text: args.nickname,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 20,
+                          )
+                        ),
+                        const TextSpan(
+                          text: "!",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 20,
+                          )
+                        )
+                      ]
+                    ),
+                  )
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(30),
+                          child: Image.asset('images/bg-header.png'),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            children: const [
+                              Center(child: Text("Welcome to Nutrious!", textAlign: TextAlign.center, style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white
+                              ),)),
+                              SizedBox(height: 3,),
+                              Center(child: Text("With great nutrition, comes great health. So, help yourself and others to achieve good health!", textAlign: TextAlign.center, style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white
+                              ),))
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
+                child: Column(
+                  children: [
+                    const Text("Leave a Message for Our Administrator",
+                        style: TextStyle(fontWeight: FontWeight.w700)),
+                    const SizedBox(height: 8),
+                    Form(
+                      key: _formKey,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 8,
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10))
+                                ),
+                                contentPadding: EdgeInsets.fromLTRB(8, 2, 8, 2),
+                                hintText: "Message",
+                              ),
+                              onSaved: (String? value){
+                                setState(() {
+                                  message = value!;
                                 });
-                                final response = await request.post(
-                                  "https://nutrious.up.railway.app/add-message/",
-                                {
-                                  "message": message
-                                }).timeout(const Duration(seconds: 10),
-                                    onTimeout: () {
-                                    setState((){
-                                      isLoading=false;
-                                    });
+                              },
+                              onChanged: (String? value){
+                                setState(() {
+                                  message = value!;
+                                });
+                              },
+                                validator: (String? value){
+                                  if (value == null || value.isEmpty){
+                                    return 'Please fill the message field';
+                                  }
+                                  return null;
+                                }
+                            ),
+                          ),
+                          !isLoading ? Expanded(
+                            flex: 1,
+                            child: IconButton(
+                              icon: const Icon(Icons.send, color: Colors.indigo,),
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  setState((){
+                                    isLoading=true;
+                                  });
+                                  final response = await request.post(
+                                    "https://nutrious.up.railway.app/add-message/",
+                                  {
+                                    "message": message
+                                  }).timeout(const Duration(seconds: 10),
+                                      onTimeout: () {
+                                      setState((){
+                                        isLoading=false;
+                                      });
+                                      showDialog(context: context, builder: (context) {
+                                        return AlertDialog(
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(15.0))
+                                          ),
+                                          title: const Text("Error", style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                          ),),
+                                          content: const Text("Failed to send message. Please check your internet connection."),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.all(5),
+                                                child: const Text("Close", style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                ),),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                  });
+                                  setState((){
+                                    isLoading=false;
+                                  });
+                                  if (response != null){
                                     showDialog(context: context, builder: (context) {
                                       return AlertDialog(
                                         shape: const RoundedRectangleBorder(
                                             borderRadius: BorderRadius.all(Radius.circular(15.0))
                                         ),
-                                        title: const Text("Error", style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                        ),),
-                                        content: const Text("Failed to send message. Please check your internet connection."),
+                                        content: Text(response["status"]),
                                         actions: <Widget>[
                                           TextButton(
                                             onPressed: () {
@@ -193,214 +222,181 @@ class _UserDashboardState extends State<UserDashboard> {
                                         ],
                                       );
                                     });
-                                });
-                                setState((){
-                                  isLoading=false;
-                                });
-                                if (response != null){
-                                  showDialog(context: context, builder: (context) {
-                                    return AlertDialog(
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(15.0))
-                                      ),
-                                      content: Text(response["status"]),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.all(5),
-                                            child: const Text("Close", style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                            ),),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  });
+                                  }
                                 }
-                              }
-                            },),
-                        ) : Expanded(
-                              flex: 1,
-                              child: Container(
-                                margin: const EdgeInsets.all(5),
-                                child: const CircularProgressIndicator()),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            const Text("Explore Our Features", style: TextStyle(
-              fontWeight: FontWeight.w700
-            ),),
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.all(5),
-                child: ListView(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: const BorderRadius.all(Radius.circular(10)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 1,
+                              },),
+                          ) : Expanded(
+                                flex: 1,
+                                child: Container(
+                                  margin: const EdgeInsets.all(5),
+                                  child: const CircularProgressIndicator()),
                           )
-                        ]
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.all(5),
-                      height: 50,
-                      child: InkWell(
-                        child: const Center(
-                          child: Text("Fundraising",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700
-                          ),),
-                        ),
-                        onTap: () {
-                          Navigator.of(context).pushReplacementNamed(
-                              "/donation_list",
-                              arguments: UserArguments(
-                                  args.isAdmin,
-                                  args.username,
-                                  args.nickname,
-                                  args.desc,
-                                  args.profURL,
-                                  args.isVerified
-                              )
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 5,),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 1,
-                            )
-                          ]
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.all(5),
-                      height: 50,
-                      child: InkWell(
-                        child: const Center(
-                          child: Text("Food-Sharing",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700
-                            ),),
-                        ),
-                        onTap: (){
-                          // insert navigator
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 5,),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 1,
-                            )
-                          ]
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.all(5),
-                      height: 50,
-                      child: InkWell(
-                        child: const Center(
-                          child: Text("Calorie Tracker",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700
-                            ),),
-                        ),
-                        onTap: (){
-                          // insert navigator
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 5,),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 1,
-                            )
-                          ]
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.all(5),
-                      height: 50,
-                      child: InkWell(
-                        child: const Center(
-                          child: Text("Food Recipes",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700
-                            ),),
-                        ),
-                        onTap: (){
-                          // insert navigator
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 5,),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 1,
-                            )
-                          ]
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.all(5),
-                      height: 50,
-                      child: InkWell(
-                        child: const Center(
-                          child: Text("Blog",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700
-                            ),),
-                        ),
-                        onTap: (){
-                          // insert navigator
-                        },
+                        ],
                       ),
                     )
                   ],
                 ),
               ),
-            )
-          ],
+              const Center(
+                child: Text("Explore Our Features", style: TextStyle(
+                  fontWeight: FontWeight.w700
+                ),),
+              ),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.all(5),
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 1,
+                            )
+                          ]
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(5),
+                        height: 50,
+                        child: InkWell(
+                          child: const Center(
+                            child: Text("Fundraising",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700
+                            ),),
+                          ),
+                          onTap: () {
+
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 5,),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 1,
+                              )
+                            ]
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(5),
+                        height: 50,
+                        child: InkWell(
+                          child: const Center(
+                            child: Text("Food-Sharing",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700
+                              ),),
+                          ),
+                          onTap: (){
+                            // insert navigator
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 5,),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 1,
+                              )
+                            ]
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(5),
+                        height: 50,
+                        child: InkWell(
+                          child: const Center(
+                            child: Text("Calorie Tracker",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700
+                              ),),
+                          ),
+                          onTap: (){
+                            // insert navigator
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 5,),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 1,
+                              )
+                            ]
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(5),
+                        height: 50,
+                        child: InkWell(
+                          child: const Center(
+                            child: Text("Food Recipes",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700
+                              ),),
+                          ),
+                          onTap: (){
+                            // insert navigator
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 5,),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 1,
+                              )
+                            ]
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(5),
+                        height: 50,
+                        child: InkWell(
+                          child: const Center(
+                            child: Text("Blog",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700
+                              ),),
+                          ),
+                          onTap: (){
+                            // insert navigator
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
