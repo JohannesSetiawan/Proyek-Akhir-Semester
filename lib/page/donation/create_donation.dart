@@ -70,7 +70,7 @@ class _OpenDonationState extends State<OpenDonation> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    // Menambahkan behavior saat kolom judul diisi
+                    // Menambahkan behavior saat kolom name diisi
                     onChanged: (String? value) {
                       setState(() {
                         name = value!;
@@ -106,7 +106,13 @@ class _OpenDonationState extends State<OpenDonation> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    // Menambahkan behavior saat kolom judul diisi
+
+                    minLines: 3,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+
+
+                    // Menambahkan behavior saat kolom description diisi
                     onChanged: (String? value) {
                       setState(() {
                         description = value!;
