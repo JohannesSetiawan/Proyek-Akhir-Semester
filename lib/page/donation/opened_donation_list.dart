@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:nutrious/page/donation/donation_detail.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:nutrious/model/fundraising.dart';
 import 'package:nutrious/util/curr_converter.dart';
-import '../../model/user_data.dart';
 import '../home/drawer.dart';
-import 'create_donation.dart';
 
 class OpenedDonationList extends StatefulWidget {
-  final args;
+  final dynamic args;
   const OpenedDonationList({Key? key, required this.args}) : super(key: key);
 
   @override
@@ -18,10 +15,11 @@ class OpenedDonationList extends StatefulWidget {
 
 class _OpenedDonationListState extends State<OpenedDonationList> {
 
-  void delete(request, id) async {
+  delete(request, id) async {
     String pk = id.toString();
     var response = await request.post('https://nutrious.up.railway.app/donation/close/',
         {"id" : pk});
+    return response;
   }
 
   @override
@@ -153,7 +151,7 @@ class _OpenedDonationListState extends State<OpenedDonationList> {
                                     flex: 1,
                                     child: Align(
                                       alignment: Alignment.topLeft,
-                                      child: Text("Collected: " + snapshot.data![index].collectedFunds.toString(),
+                                      child: Text("Collected: ${snapshot.data![index].collectedFunds}",
                                         textAlign: TextAlign.left,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
@@ -185,10 +183,6 @@ class _OpenedDonationListState extends State<OpenedDonationList> {
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: TextButton(
-                                        child: const Text(
-                                          "Close donation",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
                                         style: ButtonStyle(
                                           backgroundColor: MaterialStateProperty.all(Colors.red),
                                         ),
@@ -198,6 +192,10 @@ class _OpenedDonationListState extends State<OpenedDonationList> {
                                               MaterialPageRoute(builder: (context) =>
                                                   OpenedDonationList(args: args)));
                                         },
+                                        child: const Text(
+                                          "Close donation",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                                       ),
                                     ),
                                   ),
