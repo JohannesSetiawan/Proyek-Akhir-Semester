@@ -81,8 +81,21 @@ class _DrawerMenuState extends State<DrawerMenu> {
               );
             },
           ),
-          const ListTile(
-            title: Text("Food Recipes"),
+          ListTile(
+            title: const Text("Food Recipes"),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(
+                  "/recipe_page",
+                  arguments: UserArguments(
+                      widget.isAdmin,
+                      widget.username,
+                      widget.nickname,
+                      widget.description,
+                      widget.profileURL,
+                      widget.isVerified
+                  )
+              );
+            },
           ),
           const ListTile(
             title: Text("Blog"),
