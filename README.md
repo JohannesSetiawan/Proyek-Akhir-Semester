@@ -50,59 +50,40 @@ keamanan, hanya *user* yang sudah terverifikasi saja yang dapat membuka penggala
 
 ## Alur Pengintegrasian dengan *Web Service* dari PTS
 1. Fitur Utama <br>
-..- Untuk sistem *login*, *user* akan memasukkan *username* dan *password* pada halaman yang tersedia. Selanjutnya,
-data terkait *username* dan *password* akan di-*pass* pada salah satu parameter *method* `login` yang disediakan
-oleh *package* `pbp_django_auth`. Data tersebut diteruskan ke URL `https://nutrious.up.railway.app/auth/login/`
-yang berisi fungsi `views` untuk *login* secara *asynchronous*. Fungsi tersebut akan menerapkan autentikasi
-terhadap *user* yang ingin *login* dan mengembalikan JSON berupa informasi dari *user* yang berhasil *login*
-atau *error message* jika *user* tidak berhasil *login*. Informasi yang didapatkan tersebut kemudian digunakan
-untuk menentukan apakah *role* *user* adalah admin atau pengguna biasa. Berdasarkan *role*-nya, *user* akan
-diarahkan ke *dashboard page* yang sesuai dengan *role* tersebut.
-..- Untuk sistem *logout*, *user* cukup mengklik tombol `Log Out` yang ada pada *drawer*. Setelah itu, dilakukan
-pemanggilan terhadap *method* `logout` yang disediakan oleh *package* `pbp_django_auth`, dengan parameter URL
-`https://nutrious.up.railway.app/auth/logout/` yang berisi fungsi `views` untuk *logout*. Jika berhasil *logout*,
-fungsi akan mengembalikan JSON yang berisi *status message* dari operasi tersebut dan *user* akan diarahkan ke
-*page* `Login-Register`.
-..- Untuk pengiriman *message* ke admin oleh pengguna biasa, pengguna tinggal memasukkan *message* yang ingin
-dikirim melalui kolom input yang telah disediakan. Setelah pengguna menekan tombol untuk kirim, data *message*
-yang dimasukkan oleh pengguna akan di-*pass* menjadi salah satu parameter *method* `post` yang disediakan oleh
-*package* `pbp_django_auth`. Data akan diteruskan ke URL `https://nutrious.up.railway.app/add-message/` yang
-berisi fungsi `views` untuk menambahkan *message* ke *database* secara *asynchronous*.
-..- Untuk melihat daftar pengguna pada *dashboard* admin, dilakukan pengambilan data dari URL
-`https://nutrious.up.railway.app/json-user/` yang akan mengembalikan JSON berupa daftar pengguna beserta informasi yang
-terkait. Pengambilan data memanfaatkan *method* `get` yang disediakan oleh *package* `pbp_django_auth`. Setelah itu,
-akan dibuat *model class* `User` untuk pengaksesan data. Selanjutnya, dilakukan *loop* pada respons data tersebut untuk
-kemudian dikonversi menjadi *instance* dari `User`, lalu ditambahkan ke `list`. Selanjutnya, dibuat `FutureBuilder`
-dengan parameter `future` yang berupa fungsi `Future` untuk *fetch* data dan mengembalikan `list of User`. Kemudian,
-`list` kembalian fungsi tersebut di-*pass* menjadi parameter `snapshot` untuk parameter `builder` di `FutureBuilder`.
-Selanjutnya, dilakukan *looping* di `list` tersebut untuk menampilkan informasi dari `User` dalam suatu `Container`
-yang menjadi `children` dari `ListView`. Kemudian, ketika ingin melihat detail dari pengguna, `Container` tersebut dapat
-diklik, yang kemudian *page* akan dipindahkan ke *page* yang berisi detail dari pengguna, yaitu pada *widget* `UserDetail`.
-Ketika dilakukan *push* ke *widget* tersebut, data `id` dan `detail` di-*pass* ke *widget* tersebut, lalu `detail` akan
-diekstrak untuk diambil nilai dari propertinya dan ditampilkan pada *page* detail tersebut.
-..- Untuk melihat daftar *fundraising* pada *dashboard* admin, dilakukan pengambilan data dari URL
-`https://nutrious.up.railway.app/donation/json-with-name/` yang akan mengembalikan JSON berupa daftar donasi beserta informasi yang
-terkait. Pengambilan data memanfaatkan *method* `get` yang disediakan oleh *package* `pbp_django_auth`. Setelah itu,
-akan dibuat *model class* `Fundraising` untuk pengaksesan data. Selanjutnya, dilakukan *loop* pada respons data tersebut untuk
-kemudian dikonversi menjadi *instance* dari `Fundraising`, lalu ditambahkan ke `list`. Selanjutnya, dibuat `FutureBuilder`
-dengan parameter `future` yang berupa fungsi `Future` untuk *fetch* data dan mengembalikan `list of Fundraising`. Kemudian,
-`list` kembalian fungsi tersebut di-*pass* menjadi parameter `snapshot` untuk parameter `builder` di `FutureBuilder`.
-Selanjutnya, dilakukan *looping* di `list` tersebut untuk menampilkan informasi dari `Fundraising` dalam suatu `Container`
-yang menjadi `children` dari `ListView`. Kemudian, ketika ingin melihat detail dari *fundraising*, `Container` tersebut dapat
-diklik, yang kemudian *page* akan dipindahkan ke *page* yang berisi detail dari *fundraising*, yaitu pada *widget* `FundraisingDetail`.
-Ketika dilakukan *push* ke *widget* tersebut, data `detail` akan di-*pass* ke *widget* tersebut, kemudian
-diekstrak untuk diambil nilai dari propertinya dan ditampilkan pada *page* detail tersebut.
-..- Untuk melihat daftar *message* pada *dashboard* admin, dilakukan pengambilan data dari URL
-`https://nutrious.up.railway.app/json-message-name/` yang akan mengembalikan JSON berupa daftar *message* beserta informasi yang
-terkait. Pengambilan data memanfaatkan *method* `get` yang disediakan oleh *package* `pbp_django_auth`. Setelah itu,
-akan dibuat *model class* `Message` untuk pengaksesan data. Selanjutnya, dilakukan *loop* pada respons data tersebut untuk
-kemudian dikonversi menjadi *instance* dari `Message`, lalu ditambahkan ke `list`. Selanjutnya, dibuat `FutureBuilder`
-dengan parameter `future` yang berupa fungsi `Future` untuk *fetch* data dan mengembalikan `list of Message`. Kemudian,
-`list` kembalian fungsi tersebut di-*pass* menjadi parameter `snapshot` untuk parameter `builder` di `FutureBuilder`.
-Selanjutnya, dilakukan *looping* di `list` tersebut untuk menampilkan informasi dari `Message` dalam suatu `Container`
-yang menjadi `children` dari `ListView`. Kemudian, ketika ingin melihat detail dari *message*, `Container` tersebut dapat
-diklik, yang kemudian *page* akan dipindahkan ke *page* yang berisi detail dari *message*, yaitu pada *widget* `MessageDetail`.
-Ketika dilakukan *push* ke *widget* tersebut, data `detail` akan di-*pass* ke *widget* tersebut, kemudian
-diekstrak untuk diambil nilai dari propertinya dan ditampilkan pada *page* detail tersebut.
+- Untuk sistem *login*, *user* akan memasukkan *username* dan *password* pada halaman yang tersedia. Selanjutnya, data terkait *username* dan *password* akan di-*pass* pada salah satu parameter *method* `login` yang disediakan oleh *package* `pbp_django_auth`. Data tersebut diteruskan ke URL `https://nutrious.up.railway.app/auth/login/` yang berisi fungsi `views` untuk *login* secara *asynchronous*. Fungsi tersebut akan menerapkan autentikasi terhadap *user* yang ingin *login* dan mengembalikan JSON berupa informasi dari *user* yang berhasil *login* atau *error message* jika *user* tidak berhasil *login*. Informasi yang didapatkan tersebut kemudian digunakan untuk menentukan apakah *role* *user* adalah admin atau pengguna biasa. Berdasarkan *role*-nya, *user* akan diarahkan ke *dashboard page* yang sesuai dengan *role* tersebut.
+
+- Untuk sistem *logout*, *user* cukup mengklik tombol `Log Out` yang ada pada *drawer*. Setelah itu, dilakukan pemanggilan terhadap *method* `logout` yang disediakan oleh *package* `pbp_django_auth`, dengan parameter URL `https://nutrious.up.railway.app/auth/logout/` yang berisi fungsi `views` untuk *logout*. Jika berhasil *logout*, fungsi akan mengembalikan JSON yang berisi *status message* dari operasi tersebut dan *user* akan diarahkan ke *page* `Login-Register`.
+
+- Untuk pengiriman *message* ke admin oleh pengguna biasa, pengguna tinggal memasukkan*message* yang ingin dikirim melalui kolom input yang telah disediakan. Setelah pengguna menekan tombol untuk kirim, data *message* yang dimasukkan oleh pengguna akan di-*pass* menjadi salah satu parameter *method* `post` yang disediakan oleh *package* `pbp_django_auth`. Data akan diteruskan ke URL `https://nutrious.up.railway.app/add-message/` yang berisi fungsi `views` untuk menambahkan *message* ke *database* secara *asynchronous*.
+
+- Untuk melihat daftar pengguna pada *dashboard* admin, dilakukan pengambilan data dari URL
+  `https://nutrious.up.railway.app/json-user/` yang akan mengembalikan JSON berupa daftar pengguna beserta informasi yang terkait. Pengambilan data memanfaatkan *method* `get` yang disediakan oleh *package* `pbp_django_auth`. Setelah itu, akan dibuat *model class* `User` untuk pengaksesan data. Selanjutnya, dilakukan *loop* pada respons data tersebut untuk
+  kemudian dikonversi menjadi *instance* dari `User`, lalu ditambahkan ke `list`. Selanjutnya, dibuat `FutureBuilder` dengan parameter `future` yang berupa fungsi `Future` untuk *fetch* data dan mengembalikan `list of User`. Kemudian, `list` kembalian fungsi tersebut di-*pass* menjadi parameter `snapshot` untuk parameter `builder` di `FutureBuilder`. Selanjutnya, dilakukan *looping* di `list` tersebut untuk menampilkan informasi dari `User` dalam suatu `Container` yang menjadi `children` dari `ListView`. Kemudian, ketika ingin melihat detail dari pengguna, `Container` tersebut dapat diklik, yang kemudian *page* akan dipindahkan ke *page* yang berisi detail dari pengguna, yaitu pada *widget* `UserDetail`. Ketika dilakukan *push* ke *widget* tersebut, data `id` dan `detail` di-*pass* ke *widget* tersebut, lalu `detail` akan diekstrak untuk diambil nilai dari propertinya dan ditampilkan pada *page* detail tersebut.
+
+- Untuk melihat daftar *fundraising* pada *dashboard* admin, dilakukan pengambilan data dari URL
+  `https://nutrious.up.railway.app/donation/json-with-name/` yang akan mengembalikan JSON berupa daftar donasi beserta informasi yang
+  terkait. Pengambilan data memanfaatkan *method* `get` yang disediakan oleh *package* `pbp_django_auth`. Setelah itu,
+  akan dibuat *model class* `Fundraising` untuk pengaksesan data. Selanjutnya, dilakukan *loop* pada respons data tersebut untuk
+  kemudian dikonversi menjadi *instance* dari `Fundraising`, lalu ditambahkan ke `list`. Selanjutnya, dibuat `FutureBuilder`
+  dengan parameter `future` yang berupa fungsi `Future` untuk *fetch* data dan mengembalikan `list of Fundraising`. Kemudian,
+  `list` kembalian fungsi tersebut di-*pass* menjadi parameter `snapshot` untuk parameter `builder` di `FutureBuilder`.
+  Selanjutnya, dilakukan *looping* di `list` tersebut untuk menampilkan informasi dari `Fundraising` dalam suatu `Container`
+  yang menjadi `children` dari `ListView`. Kemudian, ketika ingin melihat detail dari *fundraising*, `Container` tersebut dapat
+  diklik, yang kemudian *page* akan dipindahkan ke *page* yang berisi detail dari *fundraising*, yaitu pada *widget* `FundraisingDetail`.
+  Ketika dilakukan *push* ke *widget* tersebut, data `detail` akan di-*pass* ke *widget* tersebut, kemudian
+  diekstrak untuk diambil nilai dari propertinya dan ditampilkan pada *page* detail tersebut.
+
+- Untuk melihat daftar *message* pada *dashboard* admin, dilakukan pengambilan data dari URL
+  `https://nutrious.up.railway.app/json-message-name/` yang akan mengembalikan JSON berupa daftar *message* beserta informasi yang
+  terkait. Pengambilan data memanfaatkan *method* `get` yang disediakan oleh *package* `pbp_django_auth`. Setelah itu,
+  akan dibuat *model class* `Message` untuk pengaksesan data. Selanjutnya, dilakukan *loop* pada respons data tersebut untuk
+  kemudian dikonversi menjadi *instance* dari `Message`, lalu ditambahkan ke `list`. Selanjutnya, dibuat `FutureBuilder`
+  dengan parameter `future` yang berupa fungsi `Future` untuk *fetch* data dan mengembalikan `list of Message`. Kemudian,
+  `list` kembalian fungsi tersebut di-*pass* menjadi parameter `snapshot` untuk parameter `builder` di `FutureBuilder`.
+  Selanjutnya, dilakukan *looping* di `list` tersebut untuk menampilkan informasi dari `Message` dalam suatu `Container`
+  yang menjadi `children` dari `ListView`. Kemudian, ketika ingin melihat detail dari *message*, `Container` tersebut dapat
+  diklik, yang kemudian *page* akan dipindahkan ke *page* yang berisi detail dari *message*, yaitu pada *widget* `MessageDetail`.
+  Ketika dilakukan *push* ke *widget* tersebut, data `detail` akan di-*pass* ke *widget* tersebut, kemudian
+  diekstrak untuk diambil nilai dari propertinya dan ditampilkan pada *page* detail tersebut.
 
 2. \[FITUR SELANJUTNYA\]
