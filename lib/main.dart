@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nutrious/page/donation/donation_detail.dart';
 import 'package:nutrious/page/donation/donation_list.dart';
 import 'package:nutrious/page/calorietracker/calorietracker_page.dart';
+import 'package:nutrious/page/recipe/recipe_page.dart';
 import 'package:nutrious/page/home/list_fundraising.dart';
 import 'package:nutrious/page/home/login.dart';
 import 'package:nutrious/page/home/user_dashboard.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
           "/message_list": (BuildContext context) => const MessageList(),
           "/donation_list": (BuildContext context) => const DonationList(),
           "/calorietracker_page": (BuildContext context) => const CalorieTrackerPage(),
+          "/recipe_page": (BuildContext context) => const RecipePage(),
         },
       ),
     );

@@ -59,7 +59,7 @@ class DrawerMenu extends StatelessWidget {
             title: Text("Food-Sharing"),
           ),
           ListTile(
-            title: Text("Calorie Tracker"),
+            title: const Text("Calorie Tracker"),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(
                   "/calorietracker_page",
@@ -74,8 +74,21 @@ class DrawerMenu extends StatelessWidget {
               );
             },
           ),
-          const ListTile(
-            title: Text("Food Recipes"),
+          ListTile(
+            title: const Text("Food Recipes"),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(
+                  "/recipe_page",
+                  arguments: UserArguments(
+                      isAdmin,
+                      username,
+                      nickname,
+                      description,
+                      profileURL,
+                      isVerified
+                  )
+              );
+            },
           ),
           const ListTile(
             title: Text("Blog"),
