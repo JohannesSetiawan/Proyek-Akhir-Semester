@@ -38,16 +38,14 @@ class _DonationDetailState extends State<DonationDetail> {
   String nominal = "";
 
   bool isNumeric(String value){
-    if(value == null) {
-      return false;
-    }
     return int.tryParse(value) != null;
   }
 
-  void donate(request, id, nominal) async {
+  donate(request, id, nominal) async {
     String pk = id.toString();
     var response = await request.post('https://nutrious.up.railway.app/donation/donate/',
         {"amount": nominal, "id": pk});
+    return response;
   }
 
   @override
@@ -282,10 +280,6 @@ class _DonationDetailState extends State<DonationDetail> {
                               ),
 
                               TextButton(
-                                child: const Text(
-                                  "Donate now",
-                                  style: TextStyle(color: Colors.white),
-                                ),
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(Colors.blue),
                                 ),
@@ -306,6 +300,10 @@ class _DonationDetailState extends State<DonationDetail> {
                                     );
                                   }
                                 },
+                                child: const Text(
+                                  "Donate now",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ],
                           ),

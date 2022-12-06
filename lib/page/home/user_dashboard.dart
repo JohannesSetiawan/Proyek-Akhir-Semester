@@ -12,9 +12,10 @@ class UserDashboard extends StatefulWidget {
 }
 
 class _UserDashboardState extends State<UserDashboard> {
-  String message = "";
+  // String message = "";
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
+  TextEditingController message = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
@@ -40,15 +41,14 @@ class _UserDashboardState extends State<UserDashboard> {
         nickname: args.nickname,
         profileURL: args.profURL,
         isVerified: args.isVerified,),
-      body: Center(
-        child: Expanded(
-          child: ListView(
+      body: ListView(
             children: [
               Center(
                 child: Container(
                   padding: const EdgeInsets.all(5),
                   margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: RichText(
+                    textAlign: TextAlign.center,
                     text: TextSpan(
                       children: [
                         const TextSpan(
@@ -81,7 +81,7 @@ class _UserDashboardState extends State<UserDashboard> {
                   )
                 ),
               ),
-              Padding(
+              Container(
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
@@ -129,6 +129,7 @@ class _UserDashboardState extends State<UserDashboard> {
                           Expanded(
                             flex: 8,
                             child: TextFormField(
+                              controller: message,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(10))
@@ -138,12 +139,14 @@ class _UserDashboardState extends State<UserDashboard> {
                               ),
                               onSaved: (String? value){
                                 setState(() {
-                                  message = value!;
+                                  message.text = value!;
+                                  message.selection = TextSelection.collapsed(offset: message.text.length);
                                 });
                               },
                               onChanged: (String? value){
                                 setState(() {
-                                  message = value!;
+                                  message.text = value!;
+                                  message.selection = TextSelection.collapsed(offset: message.text.length);
                                 });
                               },
                                 validator: (String? value){
@@ -154,59 +157,31 @@ class _UserDashboardState extends State<UserDashboard> {
                                 }
                             ),
                           ),
-                          !isLoading ? Expanded(
-                            flex: 1,
-                            child: IconButton(
-                              icon: const Icon(Icons.send, color: Colors.indigo,),
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  setState((){
-                                    isLoading=true;
-                                  });
-                                  final response = await request.post(
-                                    "https://nutrious.up.railway.app/add-message/",
-                                  {
-                                    "message": message
-                                  }).timeout(const Duration(seconds: 10),
-                                      onTimeout: () {
-                                      setState((){
-                                        isLoading=false;
-                                      });
-                                      showDialog(context: context, builder: (context) {
-                                        return AlertDialog(
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(Radius.circular(15.0))
-                                          ),
-                                          title: const Text("Error", style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                          ),),
-                                          content: const Text("Failed to send message. Please check your internet connection."),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Container(
-                                                padding: const EdgeInsets.all(5),
-                                                child: const Text("Close", style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                ),),
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                  });
-                                  setState((){
-                                    isLoading=false;
-                                  });
-                                  if (response != null){
+                          !isLoading ? IconButton(
+                            icon: const Icon(Icons.send, color: Colors.indigo,),
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                setState((){
+                                  isLoading=true;
+                                });
+                                final response = await request.post(
+                                  "https://nutrious.up.railway.app/add-message/",
+                                {
+                                  "message": message.text
+                                }).timeout(const Duration(seconds: 10),
+                                    onTimeout: () {
+                                    setState((){
+                                      isLoading=false;
+                                    });
                                     showDialog(context: context, builder: (context) {
                                       return AlertDialog(
                                         shape: const RoundedRectangleBorder(
                                             borderRadius: BorderRadius.all(Radius.circular(15.0))
                                         ),
-                                        content: Text(response["status"]),
+                                        title: const Text("Error", style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                        ),),
+                                        content: const Text("Failed to send message. Please check your internet connection."),
                                         actions: <Widget>[
                                           TextButton(
                                             onPressed: () {
@@ -222,15 +197,38 @@ class _UserDashboardState extends State<UserDashboard> {
                                         ],
                                       );
                                     });
-                                  }
+                                });
+                                setState((){
+                                  isLoading=false;
+                                });
+                                if (response != null){
+                                  message.clear();
+                                  showDialog(context: context, builder: (context) {
+                                    return AlertDialog(
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(15.0))
+                                      ),
+                                      content: Text(response["status"]),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.all(5),
+                                            child: const Text("Close", style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                            ),),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  });
                                 }
-                              },),
-                          ) : Expanded(
-                                flex: 1,
-                                child: Container(
+                              }
+                            },) :  Container(
                                   margin: const EdgeInsets.all(5),
                                   child: const CircularProgressIndicator()),
-                          )
                         ],
                       ),
                     )
@@ -242,8 +240,7 @@ class _UserDashboardState extends State<UserDashboard> {
                   fontWeight: FontWeight.w700
                 ),),
               ),
-              Expanded(
-                child: Container(
+              Container(
                   margin: const EdgeInsets.all(5),
                   child: Column(
                     children: [
@@ -271,7 +268,17 @@ class _UserDashboardState extends State<UserDashboard> {
                             ),),
                           ),
                           onTap: () {
-
+                            Navigator.of(context).pushReplacementNamed(
+                                "/donation_list",
+                                arguments: UserArguments(
+                                    args.isAdmin,
+                                    args.username,
+                                    args.nickname,
+                                    args.desc,
+                                    args.profURL,
+                                    args.isVerified
+                                )
+                            );
                           },
                         ),
                       ),
@@ -394,11 +401,8 @@ class _UserDashboardState extends State<UserDashboard> {
                     ],
                   ),
                 ),
-              )
+
             ],
           ),
-        ),
-      ),
-    );
-  }
+    );}
 }

@@ -109,7 +109,8 @@ class _UserListState extends State<UserList> {
                                       ),
                                       Expanded(
                                         flex: 2,
-                                        child: Text("ID: ${snapshot.data![index].pk.toString()}"),
+                                        child: Text("ID: ${snapshot.data![index].pk.toString()}",
+                                            overflow: TextOverflow.ellipsis),
                                       ),
                                       Expanded(
                                         flex: 3,
