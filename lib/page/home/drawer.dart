@@ -7,7 +7,7 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nutrious/model/user_data.dart';
 
-class DrawerMenu extends StatelessWidget {
+class DrawerMenu extends StatefulWidget {
   final isAdmin;
   final username;
   final description;
@@ -23,6 +23,13 @@ class DrawerMenu extends StatelessWidget {
     required this.isVerified}) : super(key: key);
 
   @override
+  State<DrawerMenu> createState() => _DrawerMenuState();
+}
+
+class _DrawerMenuState extends State<DrawerMenu> {
+  bool isLoading = false;
+  bool isTimedOut = false;
+  @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Drawer(
@@ -32,11 +39,11 @@ class DrawerMenu extends StatelessWidget {
             currentAccountPicture: CircleAvatar(
               radius: 50,
               backgroundImage: NetworkImage(
-                "$profileURL",
+                "${widget.profileURL}",
               ),
             ),
-            accountEmail: isVerified ? const Text("Verified") : const Text("Not Verified"),
-            accountName: Text(nickname, style: const TextStyle(
+            accountEmail: widget.isVerified ? const Text("Verified") : const Text("Not Verified"),
+            accountName: Text(widget.nickname, style: const TextStyle(
                 fontWeight: FontWeight.w700, fontSize: 15)),
           ),
           ListTile(
@@ -45,12 +52,12 @@ class DrawerMenu extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed(
                   "/donation_list",
                   arguments: UserArguments(
-                      isAdmin,
-                      username,
-                      nickname,
-                      description,
-                      profileURL,
-                      isVerified
+                      widget.isAdmin,
+                      widget.username,
+                      widget.nickname,
+                      widget.description,
+                      widget.profileURL,
+                      widget.isVerified
                   )
               );
             },
@@ -59,17 +66,17 @@ class DrawerMenu extends StatelessWidget {
             title: Text("Food-Sharing"),
           ),
           ListTile(
-            title: Text("Calorie Tracker"),
+            title: const Text("Calorie Tracker"),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(
                   "/calorietracker_page",
                   arguments: UserArguments(
-                      isAdmin,
-                      username,
-                      nickname,
-                      description,
-                      profileURL,
-                      isVerified
+                      widget.isAdmin,
+                      widget.username,
+                      widget.nickname,
+                      widget.description,
+                      widget.profileURL,
+                      widget.isVerified
                   )
               );
             },
@@ -90,12 +97,12 @@ class DrawerMenu extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed(
                   "/user_dashboard",
                   arguments: UserArguments(
-                      isAdmin,
-                      username,
-                      nickname,
-                      description,
-                      profileURL,
-                      isVerified
+                      widget.isAdmin,
+                      widget.username,
+                      widget.nickname,
+                      widget.description,
+                      widget.profileURL,
+                      widget.isVerified
                   )
               );
             },
@@ -109,25 +116,65 @@ class DrawerMenu extends StatelessWidget {
             onTap: () {
               Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => MyProfile(isAdmin: isAdmin, username: username, description: description, nickname: nickname, profileURL: profileURL, isVerified: isVerified))
+                  MaterialPageRoute(builder: (context) => MyProfile(isAdmin: widget.isAdmin, username: widget.username, description: widget.description, nickname: widget.nickname, profileURL: widget.profileURL, isVerified: widget.isVerified))
               );
             },
           ),
-          ListTile(
-            trailing: const Icon(Icons.exit_to_app, color: Colors.redAccent,),
-            title: const Text("Log Out", style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: Colors.redAccent
-            ),),
-            onTap: () async {
-              final response = await request.logout("https://nutrious.up.railway.app/auth/logout/");
-              if (response != null){
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MyApp())
+          isLoading? const CircularProgressIndicator() :
+            ListTile(
+              trailing: const Icon(Icons.exit_to_app, color: Colors.redAccent,),
+              title: const Text("Log Out", style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.redAccent
+              ),),
+              onTap: () async {
+                setState(() {
+                  isLoading = true;
+                });
+                final response = await request.logout("https://nutrious.up.railway.app/auth/logout/").timeout(
+                    const Duration(seconds: 10),
+                    onTimeout: () {
+                      setState((){
+                        isLoading = false;
+                        isTimedOut = true;
+                      });
+                    }
                 );
-              }
-            },
+                setState(() {
+                  isLoading = false;
+                });
+                if (response != null){
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const MyApp())
+                  );
+                } else {
+                  showDialog(context: context, builder: (context) {
+                    return AlertDialog(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15.0))
+                      ),
+                      title: const Text("Log Out Failed", style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                      ),),
+                      content: const Text("Check your internet connection."),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            child: const Text("Back", style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                            ),),
+                          ),
+                        ),
+                      ],
+                    );
+                  });
+                }
+              },
           ),
         ],
       ),
