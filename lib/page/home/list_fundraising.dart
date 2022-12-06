@@ -112,7 +112,8 @@ class _FundraisingListState extends State<FundraisingList> {
                                       children: [
                                         Expanded(
                                           flex: 7,
-                                          child: Text(CurrencyFormat.convertToIdr(snapshot.data![index].amountNeeded, 2)),
+                                          child: Text(CurrencyFormat.convertToIdr(snapshot.data![index].amountNeeded, 2),
+                                            overflow: TextOverflow.ellipsis,),
                                         ),
                                         Expanded(
                                           flex: 3,

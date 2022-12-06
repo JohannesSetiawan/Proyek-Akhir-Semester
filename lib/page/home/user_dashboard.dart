@@ -48,6 +48,7 @@ class _UserDashboardState extends State<UserDashboard> {
                   padding: const EdgeInsets.all(5),
                   margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: RichText(
+                    textAlign: TextAlign.center,
                     text: TextSpan(
                       children: [
                         const TextSpan(
