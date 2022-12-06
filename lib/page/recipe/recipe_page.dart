@@ -34,14 +34,44 @@ class _RecipePageState extends State<RecipePage> {
         profileURL: args.profURL,
         isVerified: args.isVerified,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Text('Hello World!'),
-          ],
-        ),
+      body: ListView(
+        children: [
+           Container(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(30),
+                          child: Image.asset('images/recipe-header.png'),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            children: const [
+                              Center(child: Text("Food Recipes", textAlign: TextAlign.center, style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white
+                              ),)),
+                              SizedBox(height: 3,),
+                              Center(child: Text("Find your food inspirations and make your own food here. You can also help others by posting your own recipes ;)", textAlign: TextAlign.center, style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white
+                              ),))
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+        ],
       ),
+      
     );
   }
 }
