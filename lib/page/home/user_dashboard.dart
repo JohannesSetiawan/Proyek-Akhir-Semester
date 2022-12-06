@@ -267,7 +267,17 @@ class _UserDashboardState extends State<UserDashboard> {
                             ),),
                           ),
                           onTap: () {
-
+                            Navigator.of(context).pushReplacementNamed(
+                                "/donation_list",
+                                arguments: UserArguments(
+                                    args.isAdmin,
+                                    args.username,
+                                    args.nickname,
+                                    args.desc,
+                                    args.profURL,
+                                    args.isVerified
+                                )
+                            );
                           },
                         ),
                       ),
