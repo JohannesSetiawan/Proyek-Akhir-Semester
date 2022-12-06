@@ -7,9 +7,16 @@ import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:nutrious/main.dart';
 
-class AdminDashboard extends StatelessWidget {
+class AdminDashboard extends StatefulWidget {
   const AdminDashboard({Key? key,}) : super(key: key);
 
+  @override
+  State<AdminDashboard> createState() => _AdminDashboardState();
+}
+
+class _AdminDashboardState extends State<AdminDashboard> {
+  bool isLoading = false;
+  bool isTimedOut = false;
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
@@ -75,6 +82,7 @@ class AdminDashboard extends StatelessWidget {
                 );
               },
             ),
+            isLoading? const CircularProgressIndicator() :
             ListTile(
               trailing: const Icon(Icons.exit_to_app, color: Colors.redAccent,),
               title: const Text("Log Out", style: TextStyle(
@@ -82,14 +90,54 @@ class AdminDashboard extends StatelessWidget {
                   color: Colors.redAccent
               ),),
               onTap: () async {
-                final response = await request.logout("https://nutrious.up.railway.app/auth/logout/");
+                setState(() {
+                  isLoading = true;
+                });
+                final response = await request.logout("https://nutrious.up.railway.app/auth/logout/").timeout(
+                    const Duration(seconds: 10),
+                    onTimeout: () {
+                      setState((){
+                        isLoading = false;
+                        isTimedOut = true;
+                      });
+                    }
+                );
+                setState(() {
+                  isLoading = false;
+                });
                 if (response != null){
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => const MyApp())
                   );
+                } else {
+                  showDialog(context: context, builder: (context) {
+                    return AlertDialog(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15.0))
+                      ),
+                      title: const Text("Log Out Failed", style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                      ),),
+                      content: const Text("Check your internet connection."),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            child: const Text("Back", style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                            ),),
+                          ),
+                        ),
+                      ],
+                    );
+                  });
                 }
-              },)
+              },
+            ),
           ],
         ),
       ),

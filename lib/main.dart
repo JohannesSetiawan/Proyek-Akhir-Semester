@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nutrious/page/donation/donation_detail.dart';
 import 'package:nutrious/page/donation/donation_list.dart';
 import 'package:nutrious/page/calorietracker/calorietracker_page.dart';
 import 'package:nutrious/page/home/list_fundraising.dart';
@@ -98,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: const Text("Log In"),
             ),
-            SizedBox(height: 2,),
+            const SizedBox(height: 2,),
             TextButton(
               style: ButtonStyle(
                   shape: MaterialStateProperty.all(
