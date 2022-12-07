@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:nutrious/page/donation/donation_detail.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:nutrious/model/fundraising.dart';
 import 'package:nutrious/util/curr_converter.dart';
-import '../../model/user_data.dart';
 import '../home/drawer.dart';
-import 'create_donation.dart';
 
 class OpenedDonationList extends StatefulWidget {
-  final args;
+  final dynamic args;
   const OpenedDonationList({Key? key, required this.args}) : super(key: key);
 
   @override
@@ -18,10 +15,11 @@ class OpenedDonationList extends StatefulWidget {
 
 class _OpenedDonationListState extends State<OpenedDonationList> {
 
-  void delete(request, id) async {
+  delete(request, id) async {
     String pk = id.toString();
     var response = await request.post('https://nutrious.up.railway.app/donation/close/',
         {"id" : pk});
+    return response;
   }
 
   @override
@@ -88,7 +86,7 @@ class _OpenedDonationListState extends State<OpenedDonationList> {
                         itemBuilder: (_, index) => Container(
                             padding: const EdgeInsets.all(10),
                             margin: const EdgeInsets.all(5),
-                            height: 150,
+                            height: 175,
                             decoration: BoxDecoration(
                                 color:Colors.white,
                                 borderRadius: BorderRadius.circular(10),
@@ -102,6 +100,7 @@ class _OpenedDonationListState extends State<OpenedDonationList> {
 
                               child: Column(
                                 children: [
+                                  // Name
                                   Expanded(
                                     flex: 1,
                                     child: Align(
@@ -115,49 +114,29 @@ class _OpenedDonationListState extends State<OpenedDonationList> {
                                         ),),
                                     ),
                                   ),
+
+                                  //Description
                                   Expanded(
                                     flex: 1,
                                     child: Align(
                                       alignment: Alignment.topLeft,
-                                      child: Text(snapshot.data![index].description,
+                                      child:Flexible(
+                                        child: Text(snapshot.data![index].description,
                                         textAlign: TextAlign.left,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 20
-                                        ),),
+                                            fontSize: 10
+                                        ),),)
                                     ),
                                   ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 10,
-                                          child: Text(CurrencyFormat.convertToIdr(snapshot.data![index].amountNeeded, 2)),
-                                        ),
-                                        Expanded(
-                                          flex: 3,
-                                          child: snapshot.data![index].isVerified ?
-                                          const Text("Verified",
-                                            textAlign: TextAlign.right, style: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.green
-                                            ),) :
-                                          const Text("Not Verified",
-                                            textAlign: TextAlign.right, style: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.red
-                                            ),),
-                                        )
-                                      ],
-                                    ),
-                                  ),
+
+                                  //Amount needed
                                   Expanded(
                                     flex: 1,
                                     child: Align(
                                       alignment: Alignment.topLeft,
-                                      child: Text("Collected: " + snapshot.data![index].collectedFunds.toString(),
+                                      child: Text("Amount Needed: ${CurrencyFormat.convertToIdr(snapshot.data![index].amountNeeded, 2)}",
                                         textAlign: TextAlign.left,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
@@ -166,15 +145,44 @@ class _OpenedDonationListState extends State<OpenedDonationList> {
                                         ),),
                                     ),
                                   ),
+
+                                  // Collected
+                                  Expanded(
+                                    flex: 1,
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text("Collected: ${snapshot.data![index].collectedFunds}",
+                                        textAlign: TextAlign.left,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 15
+                                        ),),
+                                    ),
+                                  ),
+
+                                  //Verification Status
+                                  Expanded(
+                                    flex: 1,
+                                    child: snapshot.data![index].isVerified ?
+                                    const Text("Verified",
+                                      textAlign: TextAlign.right, style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.green
+                                      ),) :
+                                    const Text("Not Verified",
+                                      textAlign: TextAlign.right, style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.red
+                                      ),),
+                                  ),
+
+                                  // Button for close donation
                                   Expanded(
                                     flex: 1,
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: TextButton(
-                                        child: const Text(
-                                          "Close donation",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
                                         style: ButtonStyle(
                                           backgroundColor: MaterialStateProperty.all(Colors.red),
                                         ),
@@ -184,6 +192,10 @@ class _OpenedDonationListState extends State<OpenedDonationList> {
                                               MaterialPageRoute(builder: (context) =>
                                                   OpenedDonationList(args: args)));
                                         },
+                                        child: const Text(
+                                          "Close donation",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                                       ),
                                     ),
                                   ),

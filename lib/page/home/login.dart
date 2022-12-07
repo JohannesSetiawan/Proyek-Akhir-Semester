@@ -20,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   String password1 = '';
   bool isPasswordVisible = true;
   bool isLoading = false;
+  bool isTimedOut = false;
 
   void togglePasswordVisibility(){
     setState(() {
@@ -147,30 +148,9 @@ class _LoginPageState extends State<LoginPage> {
                                       const Duration(seconds: 10),
                                       onTimeout: () {
                                         setState((){
-                                          isLoading=false;
+                                          isLoading = false;
+                                          isTimedOut = true;
                                         });
-                                        return AlertDialog(
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(Radius.circular(15.0))
-                                          ),
-                                          title: const Text("Login Failed", style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                          ),),
-                                          content: const Text("Check your internet connection."),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Container(
-                                                padding: const EdgeInsets.all(5),
-                                                child: const Text("Close", style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                ),),
-                                              ),
-                                            ),
-                                          ],
-                                        );
                                       }
                                     );
                                     setState((){
@@ -203,6 +183,31 @@ class _LoginPageState extends State<LoginPage> {
                                           )
                                         );
                                       }
+                                    } else if (isTimedOut) {
+                                      showDialog(context: context, builder: (context) {
+                                        return AlertDialog(
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(15.0))
+                                          ),
+                                          title: const Text("Login Failed", style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                          ),),
+                                          content: const Text("Check your internet connection."),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.all(5),
+                                                child: const Text("Close", style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                ),),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      });
                                     } else{
                                       showDialog(context: context, builder: (context) {
                                         return AlertDialog(

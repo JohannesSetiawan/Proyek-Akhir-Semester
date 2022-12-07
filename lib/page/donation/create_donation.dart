@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../model/user_data.dart';
 
 class OpenDonation extends StatefulWidget {
-  final args;
+  final dynamic args;
 
   const OpenDonation({super.key, required this.args});
 
@@ -19,15 +19,13 @@ class _OpenDonationState extends State<OpenDonation> {
   String amountNeeded = "";
 
   bool isNumeric(String value){
-    if(value == null) {
-      return false;
-    }
     return int.tryParse(value) != null;
   }
 
-  void create(request, name, description, amountNeeded) async {
+  create(request, name, description, amountNeeded) async {
     var response = await request.post('https://nutrious.up.railway.app/donation/add-donatee/',
         {"name" : name, "description" : description, "amountNeeded" : amountNeeded});
+    return response;
   }
 
   @override
@@ -70,7 +68,7 @@ class _OpenDonationState extends State<OpenDonation> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    // Menambahkan behavior saat kolom judul diisi
+                    // Menambahkan behavior saat kolom name diisi
                     onChanged: (String? value) {
                       setState(() {
                         name = value!;
@@ -106,7 +104,13 @@ class _OpenDonationState extends State<OpenDonation> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    // Menambahkan behavior saat kolom judul diisi
+
+                    minLines: 3,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+
+
+                    // Menambahkan behavior saat kolom description diisi
                     onChanged: (String? value) {
                       setState(() {
                         description = value!;
@@ -181,10 +185,6 @@ class _OpenDonationState extends State<OpenDonation> {
                 ),
 
                 TextButton(
-                  child: const Text(
-                    "Create",
-                    style: TextStyle(color: Colors.white),
-                  ),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.blue),
                   ),
@@ -204,6 +204,10 @@ class _OpenDonationState extends State<OpenDonation> {
                       );
                     }
                   },
+                  child: const Text(
+                    "Create",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),

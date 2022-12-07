@@ -151,10 +151,6 @@ class _DonationListState extends State<DonationList> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TextButton(
-                      child: const Text(
-                        "Open Donation",
-                        style: TextStyle(color: Colors.white),
-                      ),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.blue),
                       ),
@@ -163,12 +159,12 @@ class _DonationListState extends State<DonationList> {
                             MaterialPageRoute(builder: (context) =>
                                 OpenDonation(args: args)));
                       },
-                    ),
-                    TextButton(
                       child: const Text(
-                        "See opened donation(s)",
+                        "Open Donation",
                         style: TextStyle(color: Colors.white),
                       ),
+                    ),
+                    TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.blue),
                       ),
@@ -177,6 +173,10 @@ class _DonationListState extends State<DonationList> {
                             MaterialPageRoute(builder: (context) =>
                                 OpenedDonationList(args: args)));
                       },
+                      child: const Text(
+                        "See opened donation(s)",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ],
                 )
