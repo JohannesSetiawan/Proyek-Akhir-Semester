@@ -87,179 +87,158 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                 margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: Column(
                   children: [
-                    Text("Welcome to Calorie Tracker, ${args.nickname} !", 
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 30
-                      ),
-                    ),
-                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                    return Dialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:BorderRadius.circular(30.0)),
-                                      child: SizedBox(
-                                        height: 150,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Text( "\nCalories you have\n consumed:",
-                                            textAlign : TextAlign.center,
-                                            ),
-                                            Text( '$counterAdd kkal',
-                                            style: const TextStyle(fontWeight: FontWeight.w700,)),  
-                                            Padding(padding: const EdgeInsets.all(10.0),
-                                              child: ElevatedButton(
-                                              onPressed: (){
-                                              Navigator.of(context).pop();
-                                                }, child: const Text("Close"))
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ) ;
-                                },
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30.0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0)
-                              ),
-                              backgroundColor: Colors.white
-                          ),
-                          child: RichText(
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                              text: const TextSpan(
-                                text: "Calories you have\n consumed\n",
-                                style: TextStyle( fontFamily: "Poppins",color: Colors.black, fontSize: 15),
-                              children: <TextSpan>[
-                                  TextSpan(
-                                  text: "click to see it",
-                                  style: TextStyle( fontFamily: "Poppins",color: Colors.grey, fontSize: 10),
-                                  ),
-                              ],
-                              ),
-                          ),
-                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                    return Dialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:BorderRadius.circular(30.0)),
-                                      child: SizedBox(
-                                        height: 150,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Text( "\nCalories you have\n burned:",
-                                            textAlign : TextAlign.center,
-                                            ),
-                                             Text( '$counterDecrease kkal' ,
-                                             style: const TextStyle(fontWeight: FontWeight.w700,)
-                                             ),
-                                            Padding(padding: const EdgeInsets.all(10.0),
-                                              child: ElevatedButton(
-                                              onPressed: (){
-                                              Navigator.of(context).pop();
-                                                }, child: const Text("Close"))
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ) ;
-                                },
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30.0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0)
-                              ),
-                              backgroundColor: Colors.white
-                          ),
-                          child: RichText(
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                              text: const TextSpan(
-                                text: "Calories you have\n burned\n ",
-                                style: TextStyle(  fontFamily: "Poppins",color: Colors.black, fontSize: 15),
-                              children: <TextSpan>[
-                                  TextSpan(
-                                  text: "click to see it",
-                                  style: TextStyle(  fontFamily: "Poppins",color: Colors.grey, fontSize: 10),
-                                  ),
-                              ],
-                              ),
+                    Padding(padding: const EdgeInsets.all(10.0),
+                      child: Text("Welcome to Calorie Tracker, ${args.nickname} !", 
+                        overflow: TextOverflow.ellipsis,
+                        style:  const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20
                           ),
                         ),
-                        
-                        ElevatedButton(
-                          onPressed: () {
+                    ) ,
+                    
+                     ElevatedButton(
+                            onPressed: () {
                               showDialog(
-                                context: context,
-                                builder: (context) {
-                                    return Dialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:BorderRadius.circular(30.0)),
-                                      child: SizedBox(
-                                        height: 150,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Text( "\nYour total\n accumulated calories:",
-                                            textAlign: TextAlign.center,),
-                                            Text( '$total kkal',
-                                            style: const TextStyle(fontWeight: FontWeight.w700,),
+                                  context: context,
+                                  builder: (context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:BorderRadius.circular(30.0)),
+                                        child: SizedBox(
+                                          width: 340,
+                                          height: 340,
+                                          child: PageView(
+                                            scrollDirection: Axis.vertical,
+                                            children: <Widget>[
+                                              Column(
+                                                // ignore: prefer_const_literals_to_create_immutables
+                                                children: [
+                                                  const Icon( Icons.keyboard_arrow_up, 
+                                                  color: Colors.white,),
+                                                const Text( "\nCalories you have\n consumed\n",
+                                                overflow: TextOverflow.ellipsis,
+                                                    textAlign : TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight: FontWeight.w700,
+                                                    ),
+                                                ),
+                                                const Icon( Icons.fastfood,
+                                                                  size: 80, 
+                                                 ),
+                                                Text(  '\n$counterAdd kkal\n',
+                                                overflow: TextOverflow.ellipsis,
+                                                    textAlign : TextAlign.center,
+                                                    style: const TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight: FontWeight.w700,
+                                                    ),
+                                                ),
+                                                const Icon( Icons.keyboard_arrow_down, ),
+                                                ],
                                             ),
-                                            Padding(padding: const EdgeInsets.all(10.0),
-                                              child: ElevatedButton(
-                                              onPressed: (){
-                                              Navigator.of(context).pop();
-                                                }, child: const Text("Close"))
+                                            Column(
+                                                // ignore: prefer_const_literals_to_create_immutables
+                                                children: [
+                                                  const Icon( Icons.keyboard_arrow_up, ),
+                                                    const Text( "\nCalories you have\n burned\n",
+                                                    overflow: TextOverflow.ellipsis,
+                                                    textAlign : TextAlign.center,
+                                                    style: TextStyle(
+                                                                    fontSize: 20,
+                                                                    fontWeight: FontWeight.w700,
+                                                    ),
+                                                ),
+                                                const Icon( Icons.directions_run, 
+                                                              size: 80, 
+                                                              ),
+                                                Text(  '\n$counterDecrease kkal\n',
+                                                overflow: TextOverflow.ellipsis,
+                                                    textAlign : TextAlign.center,
+                                                    style: const TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight: FontWeight.w700,
+                                                    ),
+                                                ),
+                                                const Icon( Icons.keyboard_arrow_down, ),
+                                                ],
                                             ),
-                                          ],
+                                           
+                                            Column(
+                                                // ignore: prefer_const_literals_to_create_immutables
+                                                children: [
+                                                  const Icon( Icons.keyboard_arrow_up, ),
+                                                    const Text(  "\nYour total\n accumulated calories\n",
+                                                    overflow: TextOverflow.ellipsis,
+                                                    textAlign : TextAlign.center,
+                                                    style: TextStyle(
+                                                                    fontSize: 20,
+                                                                    fontWeight: FontWeight.w700,
+                                                    ), 
+                                                ),
+                                                 Text( '\n$total kkal',
+                                                 overflow: TextOverflow.ellipsis,
+                                                    textAlign : TextAlign.center,
+                                                    style: const TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight: FontWeight.w700,
+                                                    ),
+                                                ),
+                                                Padding(padding: const  EdgeInsets.fromLTRB(0, 70, 0, 0),
+                                                child: ElevatedButton(
+                                                onPressed: (){
+                                                Navigator.of(context).pop();
+                                                  }, child: const Text("Close"))
+                                              ),
+                                                ],
+                                            ),
+                                            ],
+                                            ),
                                         ),
-                                      ),
-                                    ) ;
-                                },
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30.0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0)
-                              ),
-                              backgroundColor: Colors.white
+                                      ) ;
+                                  },
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0)
+                                ),
+                                backgroundColor: Colors.white
+                            ),
+                            child: const Text("Tap me to see\n your information\n",
+                              textAlign: TextAlign.center,
+                                  style: TextStyle( color: Colors.black, fontSize: 15),
+                                
+                               
+                            ),
                           ),
-                          child: 
-                          RichText(
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                              text: const TextSpan(
-                                text: "Your total\n accumulated calories\n",
-                                style: TextStyle(  fontFamily: "Poppins",color: Colors.black, fontSize: 15),
-                              children: <TextSpan>[
-                                  TextSpan(
-                                  text: "click to see it",
-                                  style: TextStyle(  fontFamily: "Poppins",color: Colors.grey, fontSize: 10),
+                          Padding(padding: const EdgeInsets.all(10.0),
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(Colors.blue),
                                   ),
-                              ],
+                                  child: const Text(
+                                    "Delete all",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  onPressed: () {
+                                    deleteAll(request, "null");
+                                    Navigator.of(context).pushReplacementNamed(
+                                        "/calorietracker_page",
+                                        arguments: UserArguments(
+                                            args.isAdmin,
+                                            args.username,
+                                            args.nickname,
+                                            args.desc,
+                                            args.profURL,
+                                            args.isVerified
+                                        )
+                                    );
+                                  },
+                                ),
                               ),
-                          ),
-                        ),
-                      ],
-                     ),
                      const Spacer(),
                         Expanded(
                           flex: 10,
@@ -280,7 +259,7 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                       
                                         padding: const EdgeInsets.all(10),
                                         margin: const EdgeInsets.all(5),
-                                        height: 80,
+                                        height: 100,
                                         decoration: BoxDecoration(
                                             color:Colors.white,
                                             borderRadius: BorderRadius.circular(10),
@@ -294,15 +273,17 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
 
                                           child: ListTile(
                                             title: RichText(
+                                              overflow: TextOverflow.ellipsis,
                                               textAlign : TextAlign.left,
                                               text: TextSpan(
                                               style: const TextStyle(
-                                                  fontSize: 25,
+                                                  fontSize: 20,
                                                   fontFamily: "Poppins",
                                               ),
                                               children: <TextSpan>[
                                                   TextSpan(
                                                   text: "${snapshot.data![index].category}",
+                                                  
                                                   style: const TextStyle(fontWeight: FontWeight.w700,),
                                                   ),
                                                   
@@ -328,11 +309,17 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                               ],
                                               ),
                                           ),
-                                           trailing: Row(
-                                              mainAxisSize: MainAxisSize.min,
+                                           subtitle: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(DateFormat("EEEEE, yyyy-MM-dd").format(snapshot.data![index].date),
-                                                style: const TextStyle( color: Colors.grey, fontSize: 12)),
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle( color: Colors.grey, fontSize: 10)),
+                                                ],
+                                           ),
+                                            trailing: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
                                                  if(snapshot.data![index].isIncreasing)
                                                     IconButton(onPressed: () {
                                                        Navigator.push(
@@ -365,7 +352,7 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                                       );
                                                     }, icon: const Icon(Icons.delete)),
                                               ],
-                                           ),
+                                            ),
                                             onTap: () {
                                              showDialog(
                                                 context: context,
@@ -381,7 +368,7 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                                             const Text("Detail",
                                                                 textAlign: TextAlign.center,
                                                                 style: TextStyle(
-                                                                    fontSize: 30,
+                                                                    fontSize: 20,
                                                                     fontWeight: FontWeight.w700,
                                                             ),),
                                                             if(snapshot.data![index].isIncreasing)
@@ -513,31 +500,7 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                   },
                                 ),
                               ),
-                               Padding(padding: const EdgeInsets.all(10.0),
-                                child: TextButton(
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                                  ),
-                                  child: const Text(
-                                    "Delete all",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  onPressed: () {
-                                    deleteAll(request, "null");
-                                    Navigator.of(context).pushReplacementNamed(
-                                        "/calorietracker_page",
-                                        arguments: UserArguments(
-                                            args.isAdmin,
-                                            args.username,
-                                            args.nickname,
-                                            args.desc,
-                                            args.profURL,
-                                            args.isVerified
-                                        )
-                                    );
-                                  },
-                                ),
-                              ),
+                               
                               ],
                             )
                           ),
