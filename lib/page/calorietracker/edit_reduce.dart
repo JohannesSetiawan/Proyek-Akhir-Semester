@@ -3,10 +3,10 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import '../../model/user_data.dart';
 import 'package:nutrious/model/calorie.dart';
-
 class EditReduceCaloriePage extends StatefulWidget {
  
   final Calorie mycalorie;
+  // ignore: prefer_typing_uninitialized_variables
   final args;
   
 
@@ -26,6 +26,7 @@ class _EditReduceCaloriePageState extends State<EditReduceCaloriePage> {
         txtdescription = TextEditingController(text: widget.mycalorie.description);
     }
     bool isNumeric(String s) {
+        // ignore: unnecessary_null_comparison
         if (s == null) {
             return false;
         }
@@ -37,7 +38,7 @@ class _EditReduceCaloriePageState extends State<EditReduceCaloriePage> {
         setup();
     }
     
-    void edit_reduce_savef(request, id, calorie, description) async {
+    void editReduceSavef(request, id, calorie, description) async {
         String pk = id.toString();
         if(calorie==""){
             calorie= widget.mycalorie.calorie.toString();
@@ -45,7 +46,7 @@ class _EditReduceCaloriePageState extends State<EditReduceCaloriePage> {
         if(description==""){
             description=widget.mycalorie.description;
         }
-    var response = await request.post('https://nutrious.up.railway.app/calorietracker/edit_reduce_savef/',
+    await request.post('https://nutrious.up.railway.app/calorietracker/edit_reduce_savef/',
         {"id" : pk, "calorie" : calorie, "description" : description});
   }
   @override
@@ -117,6 +118,9 @@ class _EditReduceCaloriePageState extends State<EditReduceCaloriePage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: txtdescription,
+                    minLines: 3,
+                    maxLines: 5, 
+                    keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                       labelText: "Description",
                       // Menambahkan circular border
@@ -124,9 +128,6 @@ class _EditReduceCaloriePageState extends State<EditReduceCaloriePage> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    minLines: 3,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
 
                     // Menambahkan behavior saat kolom description diisi
                     onChanged: (String? value) {
@@ -136,7 +137,6 @@ class _EditReduceCaloriePageState extends State<EditReduceCaloriePage> {
                     },
                     // Menambahkan behavior saat data disimpan
                     onSaved: (String? value) {
-                        print("halo");
                       setState(() {
                         description = value!;
                       });
@@ -154,16 +154,16 @@ class _EditReduceCaloriePageState extends State<EditReduceCaloriePage> {
 
                 
                 TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                  ),
                   child: const Text(
                     "Edit",
                     style: TextStyle(color: Colors.white),
                   ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                  ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      edit_reduce_savef(request,argscal.pk, calorie, description);
+                      editReduceSavef(request,argscal.pk, calorie, description);
                        Navigator.of(context).pushReplacementNamed(
                           "/calorietracker_page",
                           arguments: UserArguments(
