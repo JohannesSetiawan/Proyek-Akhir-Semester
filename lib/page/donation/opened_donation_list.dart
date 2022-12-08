@@ -150,7 +150,7 @@ class _OpenedDonationListState extends State<OpenedDonationList> {
                                     flex: 1,
                                     child: Align(
                                       alignment: Alignment.topLeft,
-                                      child: Text("Collected: ${snapshot.data![index].collectedFunds}",
+                                      child: Text("Collected: ${CurrencyFormat.convertToIdr(snapshot.data![index].collectedFunds, 2)}",
                                         textAlign: TextAlign.left,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
