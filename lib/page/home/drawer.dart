@@ -64,8 +64,21 @@ class _DrawerMenuState extends State<DrawerMenu> {
                       widget.isVerified));
             },
           ),
-          const ListTile(
-            title: Text("Food-Sharing"),
+          ListTile(
+            title: const Text("Food-Sharing"),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed(
+                  "/foodsharing_page",
+                  arguments: UserArguments(
+                      widget.isAdmin,
+                      widget.username,
+                      widget.nickname,
+                      widget.description,
+                      widget.profileURL,
+                      widget.isVerified
+                  )
+              );
+            },
           ),
           ListTile(
             title: const Text("Calorie Tracker"),
