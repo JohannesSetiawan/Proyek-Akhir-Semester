@@ -7,6 +7,7 @@ import 'package:nutrious/model/calorie.dart';
 class EditAddCaloriePage extends StatefulWidget {
  
   final Calorie mycalorie;
+  // ignore: prefer_typing_uninitialized_variables
   final args;
   
 
@@ -29,6 +30,7 @@ class _EditAddCaloriePageState extends State<EditAddCaloriePage> {
    
     List<String> listCategory= ["Breakfast", "Lunch", "Dinner", "Snack"];
     bool isNumeric(String s) {
+        // ignore: unnecessary_null_comparison
         if (s == null) {
             return false;
         }
@@ -40,21 +42,16 @@ class _EditAddCaloriePageState extends State<EditAddCaloriePage> {
         setup();
     }
     
-    void edit_add_savef(request, id, calorie, description, category) async {
+    void editAddSavef(request, id, calorie, description, category) async {
         String pk = id.toString();
-        print(calorie);
-        print(description);
-         print(category);
         if(calorie==""){
             calorie= widget.mycalorie.calorie.toString();
         }
         if(description==""){
             description=widget.mycalorie.description;
         }
-        if(category==null){
-            category=widget.mycalorie.category;
-        }
-    var response = await request.post('https://nutrious.up.railway.app/calorietracker/edit_add_savef/',
+        category ??= widget.mycalorie.category;
+    await request.post('https://nutrious.up.railway.app/calorietracker/edit_add_savef/',
         {"id" : pk, "calorie" : calorie, "description" : description, "category" :category});
   }
   @override
@@ -126,6 +123,9 @@ class _EditAddCaloriePageState extends State<EditAddCaloriePage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: txtdescription,
+                    minLines: 3,
+                    maxLines: 5, 
+                    keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                       labelText: "Description",
                       // Menambahkan circular border
@@ -133,9 +133,6 @@ class _EditAddCaloriePageState extends State<EditAddCaloriePage> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    minLines: 3,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
 
                     // Menambahkan behavior saat kolom description diisi
                     onChanged: (String? value) {
@@ -145,7 +142,6 @@ class _EditAddCaloriePageState extends State<EditAddCaloriePage> {
                     },
                     // Menambahkan behavior saat data disimpan
                     onSaved: (String? value) {
-                        print("halo");
                       setState(() {
                         description = value!;
                       });
@@ -160,9 +156,10 @@ class _EditAddCaloriePageState extends State<EditAddCaloriePage> {
                   ),
                 ),
                 SizedBox(
-                    width: 136,
+                    width: 200,
                     child: DropdownButtonFormField(
                         value: argscal.category,
+                        isExpanded: true,
                         icon: const Icon(Icons.keyboard_arrow_down),
                         items: listCategory.map((String items) {
                             return DropdownMenuItem(
@@ -170,7 +167,7 @@ class _EditAddCaloriePageState extends State<EditAddCaloriePage> {
                                 child: Text(items),
                             );
                         }).toList(),
-                        hint: Text(
+                        hint: const Text(
                         'Choose a category',
                         ),
                         onChanged: (String? newValue) {
@@ -187,19 +184,18 @@ class _EditAddCaloriePageState extends State<EditAddCaloriePage> {
                             
                     ),
                 ),
-
                 
                 TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                  ),
                   child: const Text(
                     "Edit",
                     style: TextStyle(color: Colors.white),
                   ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                  ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      edit_add_savef(request,argscal.pk, calorie, description, category);
+                      editAddSavef(request,argscal.pk, calorie, description, category);
                        Navigator.of(context).pushReplacementNamed(
                           "/calorietracker_page",
                           arguments: UserArguments(
