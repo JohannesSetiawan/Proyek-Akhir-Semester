@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:nutrious/util/curr_converter.dart';
 import '../../model/user_data.dart';
 import '../home/drawer.dart';
 import 'addcalorie_page.dart';
@@ -9,6 +8,7 @@ import 'reducecalorie_page.dart';
 import 'edit_add.dart';
 import 'edit_reduce.dart';
 import 'package:nutrious/model/calorie.dart';
+import 'package:intl/intl.dart';
 class CalorieTrackerPage extends StatefulWidget {
   
   const CalorieTrackerPage({Key? key}) : super(key: key);
@@ -18,27 +18,32 @@ class CalorieTrackerPage extends StatefulWidget {
 }
 
 class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
-  int counter_add = 0;
-  int counter_decrease = 0;
+  int counterAdd = 0;
+  int counterDecrease = 0;
   int total =0;
- hitung_add(int x){
-    counter_add += x;
-    return counter_add.toString();
+ hitungAdd(int x){
+    counterAdd += x;
+    return counterAdd.toString();
   }
- hitung_decrease(int x){
-   print("tets");
-    counter_decrease += x;
-    return counter_decrease.toString();
+ hitungDecrease(int x){
+    counterDecrease += x;
+    return counterDecrease.toString();
   }
- hitung_total(){
-   print("tets");
-    total = counter_add-counter_decrease;
+ hitungTotal(){
+    total = counterAdd-counterDecrease;
     return total.toString();
   }
   void delete(request, id) async {
     String pk = id.toString();
-    var response = await request.post('https://nutrious.up.railway.app/calorietracker/deletef/',
+    print(request);
+    await request.post('https://nutrious.up.railway.app/calorietracker/deletef/',
         {"id" : pk});
+  }
+  void deleteAll(request, nothing) async {
+    print(request);
+    final response = await request.post('https://nutrious.up.railway.app/calorietracker/deleteAllf/',
+    {"" : ""});
+    
   }
   @override
   Widget build(BuildContext context) {
@@ -46,13 +51,10 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
     final args = ModalRoute.of(context)!.settings.arguments as UserArguments;
     Future<List<Calorie>> fetchCalorie() async {
       final response = await request.get("https://nutrious.up.railway.app/calorietracker/show_jsonf/");
-      print(response);
       List<Calorie> listCalorie = [];
       for (var i in response["data"]){
         if (i != null){
-          print(Calorie.fromJson(i));
           listCalorie.add(Calorie.fromJson(i));
-          print("tets");
         }
       }
       
@@ -88,14 +90,9 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                 child: Column(
                   children: [
                     Text("Welcome to Calorie Tracker, ${args.nickname} !", 
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 30
-                      ),
-                    ),
-                    Text("\nThis is your calorie tracker for today\n",
-                    style: TextStyle(
-                      fontSize: 15
                       ),
                     ),
                      Row(
@@ -109,21 +106,22 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                     return Dialog(
                                       shape: RoundedRectangleBorder(
                                         borderRadius:BorderRadius.circular(30.0)),
-                                      child: Container(
+                                      child: SizedBox(
                                         height: 150,
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text( "Calories you have\n consumed:\n",
-                                             textAlign : TextAlign.center,
+                                            const Text( "\nCalories you have\n consumed:",
+                                            textAlign : TextAlign.center,
                                             ),
-                                            Text( '$counter_add',
-                                            style: TextStyle(fontWeight: FontWeight.w700,)
-                                            ),  
-                                            ElevatedButton(
-                                            onPressed: (){
-                                            Navigator.of(context).pop();
-                                              }, child: Text("Close"))
+                                            Text( '$counterAdd kkal',
+                                            style: const TextStyle(fontWeight: FontWeight.w700,)),  
+                                            Padding(padding: const EdgeInsets.all(10.0),
+                                              child: ElevatedButton(
+                                              onPressed: (){
+                                              Navigator.of(context).pop();
+                                                }, child: const Text("Close"))
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -132,16 +130,16 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 30.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30.0),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0)
                               ),
-                              primary: Colors.white
+                              backgroundColor: Colors.white
                           ),
                           child: RichText(
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
-                              text: TextSpan(
+                              text: const TextSpan(
                                 text: "Calories you have\n consumed\n",
                                 style: TextStyle( fontFamily: "Poppins",color: Colors.black, fontSize: 15),
                               children: <TextSpan>[
@@ -161,21 +159,23 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                     return Dialog(
                                       shape: RoundedRectangleBorder(
                                         borderRadius:BorderRadius.circular(30.0)),
-                                      child: Container(
+                                      child: SizedBox(
                                         height: 150,
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text( "Calories you have\n burned:\n ",
+                                            const Text( "\nCalories you have\n burned:",
                                             textAlign : TextAlign.center,
                                             ),
-                                             Text( '$counter_decrease',
-                                             style: TextStyle(fontWeight: FontWeight.w700,)
+                                             Text( '$counterDecrease kkal' ,
+                                             style: const TextStyle(fontWeight: FontWeight.w700,)
                                              ),
-                                            ElevatedButton(
-                                            onPressed: (){
-                                            Navigator.of(context).pop();
-                                              }, child: Text("Close"))
+                                            Padding(padding: const EdgeInsets.all(10.0),
+                                              child: ElevatedButton(
+                                              onPressed: (){
+                                              Navigator.of(context).pop();
+                                                }, child: const Text("Close"))
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -184,16 +184,16 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 30.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30.0),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0)
                               ),
-                              primary: Colors.white
+                              backgroundColor: Colors.white
                           ),
                           child: RichText(
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
-                              text: TextSpan(
+                              text: const TextSpan(
                                 text: "Calories you have\n burned\n ",
                                 style: TextStyle(  fontFamily: "Poppins",color: Colors.black, fontSize: 15),
                               children: <TextSpan>[
@@ -205,6 +205,7 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                               ),
                           ),
                         ),
+                        
                         ElevatedButton(
                           onPressed: () {
                               showDialog(
@@ -213,20 +214,22 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                     return Dialog(
                                       shape: RoundedRectangleBorder(
                                         borderRadius:BorderRadius.circular(30.0)),
-                                      child: Container(
+                                      child: SizedBox(
                                         height: 150,
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text( "Your total\n accumulated calories:\n",
+                                            const Text( "\nYour total\n accumulated calories:",
                                             textAlign: TextAlign.center,),
-                                            Text( '$total',
-                                            style: TextStyle(fontWeight: FontWeight.w700,),
+                                            Text( '$total kkal',
+                                            style: const TextStyle(fontWeight: FontWeight.w700,),
                                             ),
-                                            ElevatedButton(
-                                            onPressed: (){
-                                            Navigator.of(context).pop();
-                                              }, child: Text("Close"))
+                                            Padding(padding: const EdgeInsets.all(10.0),
+                                              child: ElevatedButton(
+                                              onPressed: (){
+                                              Navigator.of(context).pop();
+                                                }, child: const Text("Close"))
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -235,17 +238,17 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 30.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30.0),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0)
                               ),
-                              primary: Colors.white
+                              backgroundColor: Colors.white
                           ),
                           child: 
                           RichText(
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
-                              text: TextSpan(
+                              text: const TextSpan(
                                 text: "Your total\n accumulated calories\n",
                                 style: TextStyle(  fontFamily: "Poppins",color: Colors.black, fontSize: 15),
                               children: <TextSpan>[
@@ -259,7 +262,7 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                         ),
                       ],
                      ),
-                     Spacer(),
+                     const Spacer(),
                         Expanded(
                           flex: 10,
                           child: FutureBuilder(
@@ -302,23 +305,24 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                               children: <TextSpan>[
                                                   TextSpan(
                                                   text: "${snapshot.data![index].category}",
-                                                  style: TextStyle(fontWeight: FontWeight.w700,),
+                                                  style: const TextStyle(fontWeight: FontWeight.w700,),
                                                   ),
+                                                  
                                                   if(!snapshot.data![index].isIncreasing)
                                                       TextSpan( 
-                                                        text: hitung_decrease(snapshot.data![index].calorie),
-                                                      style: TextStyle(color: Colors.white),
+                                                        text: hitungDecrease(snapshot.data![index].calorie),
+                                                      style: const TextStyle(color: Colors.white),
                                                       ),
                                                   if(snapshot.data![index].isIncreasing)
                                                         TextSpan( 
-                                                          text:hitung_add(snapshot.data![index].calorie),
-                                                        style: TextStyle(color: Colors.white),
+                                                          text:hitungAdd(snapshot.data![index].calorie),
+                                                        style: const TextStyle(color: Colors.white),
                                                       ),
                                                   TextSpan(  
-                                                    text: hitung_total(),
-                                                  style: TextStyle(color: Colors.white),
+                                                    text: hitungTotal(),
+                                                  style: const TextStyle(color: Colors.white),
                                                   ),
-                                                  TextSpan(  
+                                                  const TextSpan(  
                                                     text: '\nclick me to see the detail',
                                                   style: TextStyle(color: Colors.grey, fontSize: 10,
                                                   fontFamily: "Poppins",),
@@ -329,6 +333,8 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                            trailing: Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
+                                                Text(DateFormat("EEEEE, yyyy-MM-dd").format(snapshot.data![index].date),
+                                                style: const TextStyle( color: Colors.grey, fontSize: 12)),
                                                  if(snapshot.data![index].isIncreasing)
                                                     IconButton(onPressed: () {
                                                        Navigator.push(
@@ -369,37 +375,92 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                                     return Dialog(
                                                       shape: RoundedRectangleBorder(
                                                         borderRadius:BorderRadius.circular(30.0)),
-                                                      child: Container(
-                                                        height: 300,
+                                                      child: SizedBox(
+                                                        height: 450,
                                                         child: Column(
                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
-                                                            Text("Detail",
+                                                            const Text("Detail",
                                                                 textAlign: TextAlign.center,
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
                                                                     fontSize: 30,
                                                                     fontWeight: FontWeight.w700,
                                                             ),),
+                                                            if(snapshot.data![index].isIncreasing)
+                                                              const Icon( Icons.fastfood,
+                                                                  size: 80, 
+                                                              ),
+                                                            if(!snapshot.data![index].isIncreasing)
+                                                              const Icon( Icons.directions_run, 
+                                                              size: 80, 
+                                                              ),
+                                                            //time
+                                                            RichText(
+                                                              textAlign: TextAlign.center,
+                                                              overflow: TextOverflow.ellipsis,
+                                                                text: TextSpan(
+                                                                  text: "Time added:",
+                                                                  style: const TextStyle( fontFamily: "Poppins",color: Colors.black, fontSize: 15),
+                                                                children: <TextSpan>[
+                                                                    TextSpan(
+                                                                    text: "\n${snapshot.data![index].time}",
+                                                                    style: const TextStyle( fontFamily: "Poppins",fontSize: 15),
+                                                                    ),
+                                                                ],
+                                                                ),
+                                                            ),
                                                             //Calorie
-                                                             Text("Calorie: ${snapshot.data![index].calorie.toString()}",
-                                                                textAlign: TextAlign.left,
-                                                                overflow: TextOverflow.ellipsis,
-                                                                style: const TextStyle(
-                                                                    fontSize: 15
-                                                                ),),
-                                                          
+                                                            RichText(
+                                                              textAlign: TextAlign.center,
+                                                              overflow: TextOverflow.ellipsis,
+                                                                text: TextSpan(
+                                                                  text: "Calorie:",
+                                                                  style: const TextStyle( fontFamily: "Poppins",color: Colors.black, fontSize: 15),
+                                                                children: <TextSpan>[
+                                                                    TextSpan(
+                                                                    text: "\n${snapshot.data![index].calorie.toString()} kkal",
+                                                                    style: const TextStyle( fontFamily: "Poppins",fontWeight: FontWeight.w700, fontSize: 15),
+                                                                    ),
+                                                                ],
+                                                                ),
+                                                            ),
+                                                             
+                                                          const Text( "Description:",
+                                                          textAlign: TextAlign.center,
+                                                            style:TextStyle( fontFamily: "Poppins",color: Colors.black, fontSize: 15),
+                                                          ),
+
 
                                                             // Description
-                                                            Text("Description: ${snapshot.data![index].description} " ,
-                                                                textAlign: TextAlign.left,
-                                                                overflow: TextOverflow.ellipsis,
-                                                                style: const TextStyle(
-                                                                    fontSize: 15
-                                                                ),),
-                                                            ElevatedButton(
-                                                            onPressed: (){
-                                                            Navigator.of(context).pop();
-                                                              }, child: Text("Close"))
+                                                            Container(
+                                                                margin: const EdgeInsets.all(15.0),
+                                                                padding: const EdgeInsets.all(3.0),
+                                                                height:100,
+                                                                width:100,
+                                                                
+                                                                // SingleChildScrollView should be
+                                                                // wrapped in an Expanded Widget
+                                                                child:  Expanded(
+                                                                  // SingleChildScrollView contains a
+                                                                  // single child which is scrollable
+                                                                  child: SingleChildScrollView(
+                                                                    // for Vertical scrolling
+                                                                    scrollDirection: Axis.vertical,
+                                                                    child: 
+                                                                      Text( "\n${snapshot.data![index].description}",
+                                                                      textAlign: TextAlign.center,
+                                                                      style: const TextStyle( fontFamily: "Poppins", fontSize: 15, decoration: TextDecoration.underline),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              
+                                                            Padding(padding: const EdgeInsets.all(10.0),
+                                                              child: ElevatedButton(
+                                                              onPressed: (){
+                                                              Navigator.of(context).pop();
+                                                                }, child: const Text("Close"))
+                                                          ),
                                                           ],
                                                         ),
                                                       ),
@@ -417,40 +478,71 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                             },
                           ),
                         ),
-                      Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        TextButton(
-                          child: const Text(
-                            "Add Calorie",
-                            style: TextStyle(color: Colors.white),
+                      Container(
+                      margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Padding(padding: const EdgeInsets.all(10.0),                
+                              child: TextButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.blue),
+                                ),
+                                child: const Text(
+                                  "Add Calorie",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) =>
+                                          AddCaloriePage(args: args)));
+                                  },
+                                ),
+                              ),
+                              Padding(padding: const EdgeInsets.all(10.0),
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                                  ),
+                                  child: const Text(
+                                    "Reduce Calorie",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) =>
+                                            ReduceCaloriePage(args: args)));
+                                  },
+                                ),
+                              ),
+                               Padding(padding: const EdgeInsets.all(10.0),
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                                  ),
+                                  child: const Text(
+                                    "Delete all",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  onPressed: () {
+                                    deleteAll(request, "null");
+                                    Navigator.of(context).pushReplacementNamed(
+                                        "/calorietracker_page",
+                                        arguments: UserArguments(
+                                            args.isAdmin,
+                                            args.username,
+                                            args.nickname,
+                                            args.desc,
+                                            args.profURL,
+                                            args.isVerified
+                                        )
+                                    );
+                                  },
+                                ),
+                              ),
+                              ],
+                            )
                           ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.blue),
-                          ),
-                          onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) =>
-                                    AddCaloriePage(args: args)));
-                          },
-                        ),
-                        TextButton(
-                          child: const Text(
-                            "Reduce Calorie",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.blue),
-                          ),
-                          onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) =>
-                                    ReduceCaloriePage(args: args)));
-                          },
-                        ),
-                          ],
-                    )
-                    
                   ],
                 ),
               ),
