@@ -2,57 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import '../../model/user_data.dart';
-import 'package:nutrious/model/calorie.dart';
-class EditReduceCaloriePage extends StatefulWidget {
- 
-  final Calorie mycalorie;
+
+
+class AddFoodsharingPage extends StatefulWidget {
+
   // ignore: prefer_typing_uninitialized_variables
   final args;
-  
 
-  const EditReduceCaloriePage({super.key, required this.mycalorie, required this.args});
+  const AddFoodsharingPage({super.key, required this.args});
+
   @override
-  State<EditReduceCaloriePage> createState() => _EditReduceCaloriePageState();
+  State<AddFoodsharingPage> createState() => _AddFoodsharingPageState();
 }
 
-class _EditReduceCaloriePageState extends State<EditReduceCaloriePage> {
-
+class _AddFoodsharingPageState extends State<AddFoodsharingPage> {
     final _formKey = GlobalKey<FormState>();
-    String calorie ="";
-    String description ="";
-    TextEditingController? txtcalorie, txtdescription;
-    setup(){
-        txtcalorie = TextEditingController(text: widget.mycalorie.calorie.toString());
-        txtdescription = TextEditingController(text: widget.mycalorie.description);
+    String location = "";
+    String description = "";
+    String img = "";
+
+ 
+    void create(request, location, description, img) async {
+    // ignore: unused_local_variable
+    var response = await request.post('https://nutrious.up.railway.app/foodsharing/foodsharingf/',
+        {"location" : location, "description" : description, "img" :img});
     }
-    bool isNumeric(String s) {
-        // ignore: unnecessary_null_comparison
-        if (s == null) {
-            return false;
-        }
-        return int.tryParse(s) != null;
-    }
-    @override
-    void initState(){
-        super.initState();
-        setup();
-    }
-    
-    void editReduceSavef(request, id, calorie, description) async {
-        String pk = id.toString();
-        if(calorie==""){
-            calorie= widget.mycalorie.calorie.toString();
-        }
-        if(description==""){
-            description=widget.mycalorie.description;
-        }
-    await request.post('https://nutrious.up.railway.app/calorietracker/edit_reduce_savef/',
-        {"id" : pk, "calorie" : calorie, "description" : description});
-  }
+
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    final argscal = widget.mycalorie;
     final args = widget.args;
     return Scaffold(
       appBar: AppBar(
@@ -75,14 +53,12 @@ class _EditReduceCaloriePageState extends State<EditReduceCaloriePage> {
             child: Column(
               children: [
 
-                //calorie
                 Padding(
                   // Menggunakan padding
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    controller: txtcalorie,
                     decoration: InputDecoration(
-                      labelText: "Calorie",
+                      labelText: "URL Image",
                       // Menambahkan circular border
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
@@ -91,21 +67,52 @@ class _EditReduceCaloriePageState extends State<EditReduceCaloriePage> {
                     // Menambahkan behavior saat nama diketik 
                     onChanged: (String? value) {
                         setState(() {
-                            calorie = value!;
+                            img = value!;
                         });
                     },
                     // Menambahkan behavior saat data disimpan
                     onSaved: (String? value) {
                         setState(() {
-                            calorie = value!;
+                            img = value!;
                         });
                     },
                     // Validator sebagai validasi form
                     validator: (String? value) {
                         if (value == null || value.isEmpty) {
                             return 'Please fill out this part';
-                        }else if(isNumeric(value) == false){
-                            return 'Input must be in digit';
+                        }
+                        return null;
+                    },
+                  ),
+                ),
+
+                Padding(
+                  // Menggunakan padding
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "Location",
+                      // Menambahkan circular border
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                    ),
+                    // Menambahkan behavior saat nama diketik 
+                    onChanged: (String? value) {
+                        setState(() {
+                            location = value!;
+                        });
+                    },
+                    // Menambahkan behavior saat data disimpan
+                    onSaved: (String? value) {
+                        setState(() {
+                            location = value!;
+                        });
+                    },
+                    // Validator sebagai validasi form
+                    validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                            return 'Please fill out this part';
                         }
                         return null;
                     },
@@ -117,10 +124,6 @@ class _EditReduceCaloriePageState extends State<EditReduceCaloriePage> {
                   // Menggunakan padding
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    controller: txtdescription,
-                    minLines: 3,
-                    maxLines: 5, 
-                    keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                       labelText: "Description",
                       // Menambahkan circular border
@@ -128,6 +131,9 @@ class _EditReduceCaloriePageState extends State<EditReduceCaloriePage> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
+                    minLines: 3,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
 
                     // Menambahkan behavior saat kolom description diisi
                     onChanged: (String? value) {
@@ -150,22 +156,24 @@ class _EditReduceCaloriePageState extends State<EditReduceCaloriePage> {
                     },
                   ),
                 ),
-                
+              
 
                 
                 TextButton(
+                  // ignore: sort_child_properties_last
+                  child: const Text(
+                    "Add Post",
+                    style: TextStyle(color: Colors.white),
+                  ),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.blue),
                   ),
-                  child: const Text(
-                    "Edit",
-                    style: TextStyle(color: Colors.white),
-                  ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      editReduceSavef(request,argscal.pk, calorie, description);
-                       Navigator.of(context).pushReplacementNamed(
-                          "/calorietracker_page",
+                      create(request, location, description, img);
+                      
+                        Navigator.of(context).pushReplacementNamed(
+                          "/foodsharing_page",
                           arguments: UserArguments(
                               args.isAdmin,
                               args.username,
