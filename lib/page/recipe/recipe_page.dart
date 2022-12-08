@@ -15,6 +15,7 @@ class RecipePage extends StatefulWidget {
 class _RecipePageState extends State<RecipePage> {
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final request = context.watch<CookieRequest>();
     final args = ModalRoute.of(context)!.settings.arguments as UserArguments;
     return Scaffold(
