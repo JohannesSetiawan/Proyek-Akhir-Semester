@@ -307,8 +307,9 @@ class _UserDashboardState extends State<UserDashboard> {
                               ),),
                           ),
                           onTap: (){
+                            // insert navigator
                             Navigator.of(context).pushReplacementNamed(
-                                "/calorietracker_page",
+                                "/foodsharing_page",
                                 arguments: UserArguments(
                                     args.isAdmin,
                                     args.username,
@@ -318,6 +319,7 @@ class _UserDashboardState extends State<UserDashboard> {
                                     args.isVerified
                                 )
                             );
+
                           },
                         ),
                       ),
@@ -347,6 +349,17 @@ class _UserDashboardState extends State<UserDashboard> {
                           ),
                           onTap: (){
                             // insert navigator
+                            Navigator.of(context).pushReplacementNamed(
+                                "/calorietracker_page",
+                                arguments: UserArguments(
+                                    args.isAdmin,
+                                    args.username,
+                                    args.nickname,
+                                    args.desc,
+                                    args.profURL,
+                                    args.isVerified
+                                )
+                            );
                           },
                         ),
                       ),
