@@ -35,13 +35,11 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
   }
   void delete(request, id) async {
     String pk = id.toString();
-    print(request);
     await request.post('https://nutrious.up.railway.app/calorietracker/deletef/',
         {"id" : pk});
   }
   void deleteAll(request, nothing) async {
-    print(request);
-    final response = await request.post('https://nutrious.up.railway.app/calorietracker/deleteAllf/',
+    await request.post('https://nutrious.up.railway.app/calorietracker/deleteAllf/',
     {"" : ""});
     
   }
