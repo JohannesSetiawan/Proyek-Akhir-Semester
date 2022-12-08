@@ -86,7 +86,7 @@ class _OpenedDonationListState extends State<OpenedDonationList> {
                         itemBuilder: (_, index) => Container(
                             padding: const EdgeInsets.all(10),
                             margin: const EdgeInsets.all(5),
-                            height: 175,
+                            height: 200,
                             decoration: BoxDecoration(
                                 color:Colors.white,
                                 borderRadius: BorderRadius.circular(10),
@@ -110,7 +110,7 @@ class _OpenedDonationListState extends State<OpenedDonationList> {
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 20
+                                            fontSize: 15
                                         ),),
                                     ),
                                   ),
@@ -120,14 +120,13 @@ class _OpenedDonationListState extends State<OpenedDonationList> {
                                     flex: 1,
                                     child: Align(
                                       alignment: Alignment.topLeft,
-                                      child:Flexible(
                                         child: Text(snapshot.data![index].description,
                                         textAlign: TextAlign.left,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: 10
-                                        ),),)
+                                        ),),
                                     ),
                                   ),
 
@@ -141,7 +140,7 @@ class _OpenedDonationListState extends State<OpenedDonationList> {
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 15
+                                            fontSize: 10
                                         ),),
                                     ),
                                   ),
@@ -156,7 +155,7 @@ class _OpenedDonationListState extends State<OpenedDonationList> {
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 15
+                                            fontSize: 10
                                         ),),
                                     ),
                                   ),
