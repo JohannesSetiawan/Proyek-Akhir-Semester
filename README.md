@@ -1,3 +1,4 @@
+[![Build status](https://build.appcenter.ms/v0.1/apps/fe1e6724-e0e7-4de6-b655-9a7f1f5f74b8/branches/master/badge)](https://appcenter.ms)
 # Nutrious Mobile
 
 ## Nama Anggota Kelompok
