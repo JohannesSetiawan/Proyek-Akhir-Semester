@@ -15,6 +15,8 @@ class Calorie {
         required this.description,
         required this.category,
         required this.isIncreasing,
+        required this.date,
+        required this.time,
     });
 
     int pk;
@@ -22,6 +24,8 @@ class Calorie {
     String description;
     String category;
     bool isIncreasing;
+    DateTime date;
+    String time;
 
     factory Calorie.fromJson(Map<String, dynamic> json) => Calorie(
         pk: json["pk"],
@@ -29,6 +33,8 @@ class Calorie {
         description: json["description"],
         category: json["category"],
         isIncreasing: json["is_increasing"],
+        date: DateTime.parse(json["date"]),
+        time: json["time"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -37,5 +43,7 @@ class Calorie {
         "description": description,
         "category": category,
         "is_increasing": isIncreasing,
+        "date": date.toIso8601String(),
+        "time": time,
     };
 }

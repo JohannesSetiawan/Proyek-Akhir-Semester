@@ -14,13 +14,15 @@ class DrawerMenu extends StatefulWidget {
   final nickname;
   final profileURL;
   final isVerified;
-  const DrawerMenu({Key? key,
-    required this.isAdmin,
-    required this.username,
-    required this.description,
-    required this.nickname,
-    required this.profileURL,
-    required this.isVerified}) : super(key: key);
+  const DrawerMenu(
+      {Key? key,
+      required this.isAdmin,
+      required this.username,
+      required this.description,
+      required this.nickname,
+      required this.profileURL,
+      required this.isVerified})
+      : super(key: key);
 
   @override
   State<DrawerMenu> createState() => _DrawerMenuState();
@@ -42,24 +44,24 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 "${widget.profileURL}",
               ),
             ),
-            accountEmail: widget.isVerified ? const Text("Verified") : const Text("Not Verified"),
-            accountName: Text(widget.nickname, style: const TextStyle(
-                fontWeight: FontWeight.w700, fontSize: 15)),
+            accountEmail: widget.isVerified
+                ? const Text("Verified")
+                : const Text("Not Verified"),
+            accountName: Text(widget.nickname,
+                style:
+                    const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
           ),
           ListTile(
             title: const Text("Fundraising"),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(
-                  "/donation_list",
+              Navigator.of(context).pushReplacementNamed("/donation_list",
                   arguments: UserArguments(
                       widget.isAdmin,
                       widget.username,
                       widget.nickname,
                       widget.description,
                       widget.profileURL,
-                      widget.isVerified
-                  )
-              );
+                      widget.isVerified));
             },
           ),
           ListTile(
@@ -81,127 +83,155 @@ class _DrawerMenuState extends State<DrawerMenu> {
           ListTile(
             title: const Text("Calorie Tracker"),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(
-                  "/calorietracker_page",
+              Navigator.of(context).pushReplacementNamed("/calorietracker_page",
                   arguments: UserArguments(
                       widget.isAdmin,
                       widget.username,
                       widget.nickname,
                       widget.description,
                       widget.profileURL,
-                      widget.isVerified
-                  )
-              );
+                      widget.isVerified));
             },
           ),
           ListTile(
             title: const Text("Food Recipes"),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(
-                  "/recipe_page",
+              Navigator.of(context).pushReplacementNamed("/recipe_page",
                   arguments: UserArguments(
                       widget.isAdmin,
                       widget.username,
                       widget.nickname,
                       widget.description,
                       widget.profileURL,
-                      widget.isVerified
-                  )
-              );
+                      widget.isVerified));
             },
           ),
-          const ListTile(
-            title: Text("Blog"),
-          ),
           ListTile(
-            trailing: const Icon(Icons.home, color: Colors.indigo,),
-            title: const Text("Back to Home", style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: Colors.indigo
-            ),),
+            title: const Text("Blog"),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(
-                  "/user_dashboard",
+              Navigator.of(context).pushReplacementNamed("/blog_list",
                   arguments: UserArguments(
                       widget.isAdmin,
                       widget.username,
                       widget.nickname,
                       widget.description,
                       widget.profileURL,
-                      widget.isVerified
-                  )
-              );
+                      widget.isVerified));
             },
           ),
           ListTile(
-            trailing: const Icon(Icons.person, color: Colors.indigo,),
-            title: const Text("View Profile", style: TextStyle(
-              fontWeight: FontWeight.w700,
-              color: Colors.indigo
-            ),),
+            trailing: const Icon(
+              Icons.home,
+              color: Colors.indigo,
+            ),
+            title: const Text(
+              "Back to Home",
+              style:
+                  TextStyle(fontWeight: FontWeight.w700, color: Colors.indigo),
+            ),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed("/user_dashboard",
+                  arguments: UserArguments(
+                      widget.isAdmin,
+                      widget.username,
+                      widget.nickname,
+                      widget.description,
+                      widget.profileURL,
+                      widget.isVerified));
+            },
+          ),
+          ListTile(
+            trailing: const Icon(
+              Icons.person,
+              color: Colors.indigo,
+            ),
+            title: const Text(
+              "View Profile",
+              style:
+                  TextStyle(fontWeight: FontWeight.w700, color: Colors.indigo),
+            ),
             onTap: () {
               Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => MyProfile(isAdmin: widget.isAdmin, username: widget.username, description: widget.description, nickname: widget.nickname, profileURL: widget.profileURL, isVerified: widget.isVerified))
-              );
+                  MaterialPageRoute(
+                      builder: (context) => MyProfile(
+                          isAdmin: widget.isAdmin,
+                          username: widget.username,
+                          description: widget.description,
+                          nickname: widget.nickname,
+                          profileURL: widget.profileURL,
+                          isVerified: widget.isVerified)));
             },
           ),
-          isLoading? const CircularProgressIndicator() :
-            ListTile(
-              trailing: const Icon(Icons.exit_to_app, color: Colors.redAccent,),
-              title: const Text("Log Out", style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: Colors.redAccent
-              ),),
-              onTap: () async {
-                setState(() {
-                  isLoading = true;
-                });
-                final response = await request.logout("https://nutrious.up.railway.app/auth/logout/").timeout(
-                    const Duration(seconds: 10),
-                    onTimeout: () {
-                      setState((){
+          isLoading
+              ? const CircularProgressIndicator()
+              : ListTile(
+                  trailing: const Icon(
+                    Icons.exit_to_app,
+                    color: Colors.redAccent,
+                  ),
+                  title: const Text(
+                    "Log Out",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700, color: Colors.redAccent),
+                  ),
+                  onTap: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    final response = await request
+                        .logout("https://nutrious.up.railway.app/auth/logout/")
+                        .timeout(const Duration(seconds: 10), onTimeout: () {
+                      setState(() {
                         isLoading = false;
                         isTimedOut = true;
                       });
+                    });
+                    setState(() {
+                      isLoading = false;
+                    });
+                    if (response != null) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyApp()));
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0))),
+                              title: const Text(
+                                "Log Out Failed",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              content:
+                                  const Text("Check your internet connection."),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(5),
+                                    child: const Text(
+                                      "Back",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          });
                     }
-                );
-                setState(() {
-                  isLoading = false;
-                });
-                if (response != null){
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const MyApp())
-                  );
-                } else {
-                  showDialog(context: context, builder: (context) {
-                    return AlertDialog(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15.0))
-                      ),
-                      title: const Text("Log Out Failed", style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                      ),),
-                      content: const Text("Check your internet connection."),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            child: const Text("Back", style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                            ),),
-                          ),
-                        ),
-                      ],
-                    );
-                  });
-                }
-              },
-          ),
+                  },
+                ),
         ],
       ),
     );
