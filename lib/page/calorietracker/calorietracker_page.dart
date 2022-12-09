@@ -365,12 +365,15 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                                         child: Column(
                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
-                                                            const Text("Detail",
+                                                            const Padding(padding: EdgeInsets.all(10.0),
+                                                              child: Text("Detail",
                                                                 textAlign: TextAlign.center,
                                                                 style: TextStyle(
                                                                     fontSize: 20,
                                                                     fontWeight: FontWeight.w700,
                                                             ),),
+                                                            ) ,
+                                                            
                                                             if(snapshot.data![index].isIncreasing)
                                                               const Icon( Icons.fastfood,
                                                                   size: 80, 
@@ -418,18 +421,11 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
 
                                                             // Description
                                                             Container(
-                                                                margin: const EdgeInsets.all(15.0),
                                                                 padding: const EdgeInsets.all(3.0),
-                                                                height:100,
+                                                                height:75,
                                                                 width:100,
                                                                 
-                                                                // SingleChildScrollView should be
-                                                                // wrapped in an Expanded Widget
-                                                                child:  Expanded(
-                                                                  // SingleChildScrollView contains a
-                                                                  // single child which is scrollable
                                                                   child: SingleChildScrollView(
-                                                                    // for Vertical scrolling
                                                                     scrollDirection: Axis.vertical,
                                                                     child: 
                                                                       Text( "\n${snapshot.data![index].description}",
@@ -437,7 +433,6 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                                                       style: const TextStyle( fontFamily: "Poppins", fontSize: 15, decoration: TextDecoration.underline),
                                                                       ),
                                                                     ),
-                                                                  ),
                                                                 ),
                                                               
                                                             Padding(padding: const EdgeInsets.all(10.0),
