@@ -1,4 +1,7 @@
 [![Build status](https://build.appcenter.ms/v0.1/apps/fe1e6724-e0e7-4de6-b655-9a7f1f5f74b8/branches/master/badge)](https://appcenter.ms)
+[![Pre-Release](https://github.com/JohannesSetiawan/nutrious-mobile/actions/workflows/pre-release.yml/badge.svg)](https://github.com/JohannesSetiawan/nutrious-mobile/actions/workflows/pre-release.yml)
+[![Release](https://github.com/JohannesSetiawan/nutrious-mobile/actions/workflows/release.yml/badge.svg)](https://github.com/JohannesSetiawan/nutrious-mobile/actions/workflows/release.yml)
+[![Staging](https://github.com/JohannesSetiawan/nutrious-mobile/actions/workflows/staging.yml/badge.svg)](https://github.com/JohannesSetiawan/nutrious-mobile/actions/workflows/staging.yml)
 # Nutrious Mobile
 
 ## Nama Anggota Kelompok
