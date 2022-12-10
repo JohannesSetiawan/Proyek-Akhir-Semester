@@ -73,7 +73,7 @@ class _DonationListState extends State<DonationList> {
                     return const Center(child: CircularProgressIndicator());
                   } else{
                     if (!snapshot.hasData) {
-                      return const Text("No Opened Fundraising");
+                      return const Text("No Opened Donation/Fundraising");
                     } else{
                       return ListView.builder(
                         padding: const EdgeInsets.all(7),
@@ -81,7 +81,7 @@ class _DonationListState extends State<DonationList> {
                         itemBuilder: (_, index) => Container(
                             padding: const EdgeInsets.all(10),
                             margin: const EdgeInsets.all(5),
-                            height: 100,
+                            height: 130,
                             decoration: BoxDecoration(
                                 color:Colors.white,
                                 borderRadius: BorderRadius.circular(10),
@@ -125,7 +125,18 @@ class _DonationListState extends State<DonationList> {
                                       children: [
                                         Expanded(
                                           flex: 7,
-                                          child: Text(CurrencyFormat.convertToIdr(snapshot.data![index].amountNeeded, 2)),
+                                          child: Text("Amount needed: ${CurrencyFormat.convertToIdr(snapshot.data![index].amountNeeded, 2)}"),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 7,
+                                          child: Text( "Collected: ${CurrencyFormat.convertToIdr(snapshot.data![index].collectedFunds, 2)}"),
                                         ),
                                       ],
                                     ),
