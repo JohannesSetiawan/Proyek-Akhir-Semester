@@ -87,10 +87,10 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                 margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: Column(
                   children: [
-                    Padding(padding: const EdgeInsets.all(10.0),
-                      child: Text("Welcome to Calorie Tracker, ${args.nickname} !", 
+                    const Padding(padding: EdgeInsets.all(10.0),
+                      child: Text("Welcome to Calorie Tracker!", 
                         overflow: TextOverflow.ellipsis,
-                        style:  const TextStyle(
+                        style:  TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 20
                           ),
