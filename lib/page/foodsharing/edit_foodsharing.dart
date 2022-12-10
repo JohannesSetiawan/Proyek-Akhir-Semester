@@ -1,46 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import '../../model/user_data.dart';
+import 'package:nutrious/model/foodsharing.dart';
 
-
-class AddFoodsharingPage extends StatefulWidget {
-
+class EditFoodsharingPage extends StatefulWidget {
+  final Foodsharing mypost;
   // ignore: prefer_typing_uninitialized_variables
   final args;
 
-  const AddFoodsharingPage({super.key, required this.args});
-
+  const EditFoodsharingPage(
+      {super.key, required this.mypost, required this.args});
   @override
-  State<AddFoodsharingPage> createState() => _AddFoodsharingPageState();
+  State<EditFoodsharingPage> createState() => _EditFoodsharingPageState();
 }
 
-class _AddFoodsharingPageState extends State<AddFoodsharingPage> {
-    final _formKey = GlobalKey<FormState>();
-    String location = "";
-    String description = "";
-    String img = "";
-    String date = DateFormat("EEEEE, yyyy-MM-dd").format(DateTime.now());
-    String updateDate = DateFormat("EEEEE, yyyy-MM-dd").format(DateTime.now());
- 
-    void create(request, location, description, img, date, updateDate) async {
-    // ignore: unused_local_variable
-    print(location);
-    print(description);
-    print(img);
-    print(date);
-    print(updateDate);
-    // var response = await request.post('http://localhost:8000/foodsharing/foodsharingf',
-    //     {"location" : location, "description" : description, "img" :img, "date":date, "update_date":updateDate});
-    var response = await request.post('https://nutrious.up.railway.app/foodsharing/foodsharingf',
-        {"location" : location, "description" : description, "img" :img, "date":date, "update_date":updateDate});
-    print("add food sharing response: "+response);
+class _EditFoodsharingPageState extends State<EditFoodsharingPage> {
+  final _formKey = GlobalKey<FormState>();
+  String location = "";
+  String description = "";
+  String img = "";
+  TextEditingController? txtimg, txtlocation, txtdescription;
+  setup() {
+    txtimg = TextEditingController(text: widget.mypost.img);
+    txtlocation = TextEditingController(text: widget.mypost.location);
+    txtdescription = TextEditingController(text: widget.mypost.description);
+  }
+
+  void editAddSavef(request, id, location, description, img) async {
+    String pk = id.toString();
+    if (img == "") {
+      img = widget.mypost.img;
     }
+    if (location == "") {
+      location = widget.mypost.location;
+    }
+    if (description == "") {
+      description = widget.mypost.description;
+    }
+
+    await request.post(
+        'https://nutrious.up.railway.app/foodsharing/edit_add_savef', {
+      "id": pk,
+      "img": img,
+      "location": location,
+      "description": description
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
+    final argscal = widget.mypost;
     final args = widget.args;
     return Scaffold(
       appBar: AppBar(
@@ -49,24 +60,23 @@ class _AddFoodsharingPageState extends State<AddFoodsharingPage> {
           title: Image.asset('images/NUTRIOUS.png', height: 75),
           toolbarHeight: 100,
           shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(30)
-              )
-          ),
-          iconTheme: const IconThemeData(color: Colors.indigo)
-      ),
-    body: Form(
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
+          iconTheme: const IconThemeData(color: Colors.indigo)),
+      body: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-
-                Padding(
+                  Padding(
                   // Menggunakan padding
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    controller: txtimg,
+                    minLines: 3,
+                    maxLines: 5,
+                    keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                       labelText: "URL Image",
                       // Menambahkan circular border
@@ -74,32 +84,35 @@ class _AddFoodsharingPageState extends State<AddFoodsharingPage> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    // Menambahkan behavior saat nama diketik 
+
+                    // Menambahkan behavior saat kolom description diisi
                     onChanged: (String? value) {
-                        setState(() {
-                            img = value!;
-                        });
+                      setState(() {
+                        img = value!;
+                      });
                     },
                     // Menambahkan behavior saat data disimpan
                     onSaved: (String? value) {
-                        setState(() {
-                            img = value!;
-                        });
+                      setState(() {
+                        img = value!;
+                      });
                     },
                     // Validator sebagai validasi form
                     validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                            return 'Please fill out this part';
-                        }
-                        return null;
+                      if (value == null || value.isEmpty) {
+                        return 'Please fill out this part';
+                      }
+                      return null;
                     },
                   ),
                 ),
-
+                
+                //location
                 Padding(
                   // Menggunakan padding
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    controller: txtlocation,
                     decoration: InputDecoration(
                       labelText: "Location",
                       // Menambahkan circular border
@@ -107,24 +120,24 @@ class _AddFoodsharingPageState extends State<AddFoodsharingPage> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    // Menambahkan behavior saat nama diketik 
+                    // Menambahkan behavior saat nama diketik
                     onChanged: (String? value) {
-                        setState(() {
-                            location = value!;
-                        });
+                      setState(() {
+                        location = value!;
+                      });
                     },
                     // Menambahkan behavior saat data disimpan
                     onSaved: (String? value) {
-                        setState(() {
-                            location = value!;
-                        });
+                      setState(() {
+                        location = value!;
+                      });
                     },
                     // Validator sebagai validasi form
                     validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                            return 'Please fill out this part';
-                        }
-                        return null;
+                      if (value == null || value.isEmpty) {
+                        return 'Please fill out this part';
+                      }
+                      return null;
                     },
                   ),
                 ),
@@ -134,6 +147,10 @@ class _AddFoodsharingPageState extends State<AddFoodsharingPage> {
                   // Menggunakan padding
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    controller: txtdescription,
+                    minLines: 3,
+                    maxLines: 5,
+                    keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                       labelText: "Description",
                       // Menambahkan circular border
@@ -141,9 +158,6 @@ class _AddFoodsharingPageState extends State<AddFoodsharingPage> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    minLines: 3,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
 
                     // Menambahkan behavior saat kolom description diisi
                     onChanged: (String? value) {
@@ -166,37 +180,31 @@ class _AddFoodsharingPageState extends State<AddFoodsharingPage> {
                     },
                   ),
                 ),
-              
 
-                
-                Padding(padding: const EdgeInsets.all(10.0),
-                  child: TextButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    ),
-                    child: const Text(
-                      "Add Post",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        create(request, location, description, img, date, updateDate);
-                        
-                          Navigator.of(context).pushReplacementNamed(
-                            "/foodsharing_page",
-                            arguments: UserArguments(
-                                args.isAdmin,
-                                args.username,
-                                args.nickname,
-                                args.desc,
-                                args.profURL,
-                                args.isVerified
-                            )
-                        );
-                      }
-                    },
+                TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.blue),
                   ),
-                 ),
+                  child: const Text(
+                    "Edit",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      editAddSavef(
+                          request, argscal.pk, img, location, description);
+                      Navigator.of(context).pushReplacementNamed(
+                          "/foodsharing_page",
+                          arguments: UserArguments(
+                              args.isAdmin,
+                              args.username,
+                              args.nickname,
+                              args.desc,
+                              args.profURL,
+                              args.isVerified));
+                    }
+                  },
+                ),
               ],
             ),
           ),
