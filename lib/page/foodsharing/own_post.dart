@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:nutrious/page/foodsharing/add_foodsharing.dart';
+import 'package:nutrious/page/foodsharing/edit_foodsharing.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +30,7 @@ class _OwnPostState extends State<OwnPost> {
     final request = context.watch<CookieRequest>();
     final args = widget.args;
     Future<List<Foodsharing>> fetchFoodsharing() async {
-      final response = await request.get("https://nutrious.up.railway.app/foodsharing/json-by-user");
+      final response = await request.get("https://nutrious.up.railway.app/foodsharing/show_json_by_user");
       List<Foodsharing> listFoodsharing = [];
       for (var foodsharing in response["data"]){
         if (foodsharing != null){
@@ -111,7 +112,13 @@ class _OwnPostState extends State<OwnPost> {
                                                   OwnPost(args: args)));},
                                   text: 'Delete',
                                 ),
-                               
+                                  IconButton(onPressed: () {
+                                      Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) =>EditFoodsharingPage(mypost: snapshot.data![index], args: args)
+                                      ),
+                                    );
+                                  }, icon: const Icon(Icons.edit)),
                               ],
                           ),
                           
