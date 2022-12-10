@@ -205,7 +205,7 @@ class _OpenDonationState extends State<OpenDonation> {
                     }
                   },
                   child: const Text(
-                    "Create",
+                    "Open",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
