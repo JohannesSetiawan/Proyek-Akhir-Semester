@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import '../../model/user_data.dart';
@@ -17,17 +18,21 @@ class EditFoodsharingPage extends StatefulWidget {
 
 class _EditFoodsharingPageState extends State<EditFoodsharingPage> {
   final _formKey = GlobalKey<FormState>();
+  String img = "";
   String location = "";
   String description = "";
-  String img = "";
   TextEditingController? txtimg, txtlocation, txtdescription;
   setup() {
     txtimg = TextEditingController(text: widget.mypost.img);
     txtlocation = TextEditingController(text: widget.mypost.location);
     txtdescription = TextEditingController(text: widget.mypost.description);
   }
-
-  void editAddSavef(request, id, location, description, img) async {
+  @override
+  void initState(){
+      super.initState();
+      setup();
+ }
+  void editAddSavef(request, id, img, location, description) async {
     String pk = id.toString();
     if (img == "") {
       img = widget.mypost.img;
@@ -38,13 +43,16 @@ class _EditFoodsharingPageState extends State<EditFoodsharingPage> {
     if (description == "") {
       description = widget.mypost.description;
     }
-
+   
+    String updateDate = DateFormat('dd-MM-yyyy hh:mm:ss').format(DateTime.now());
     await request.post(
-        'https://nutrious.up.railway.app/foodsharing/edit_add_savef', {
+      'https://nutrious.up.railway.app/foodsharing/edit_add_savef', {
       "id": pk,
       "img": img,
       "location": location,
-      "description": description
+      "description": description,
+     
+      "update_date":updateDate,
     });
   }
 
@@ -74,9 +82,6 @@ class _EditFoodsharingPageState extends State<EditFoodsharingPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: txtimg,
-                    minLines: 3,
-                    maxLines: 5,
-                    keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                       labelText: "URL Image",
                       // Menambahkan circular border
@@ -149,7 +154,7 @@ class _EditFoodsharingPageState extends State<EditFoodsharingPage> {
                   child: TextFormField(
                     controller: txtdescription,
                     minLines: 3,
-                    maxLines: 5,
+                    maxLines: null,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                       labelText: "Description",

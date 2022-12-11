@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:nutrious/page/foodsharing/add_foodsharing.dart';
 import 'package:nutrious/page/foodsharing/edit_foodsharing.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/foodsharing.dart';
+import '../../model/user_data.dart';
 import '../home/drawer.dart';
 
 class OwnPost extends StatefulWidget {
@@ -98,20 +98,84 @@ class _OwnPostState extends State<OwnPost> {
                                 ),
                             showImage: true,
                             title:  GFListTile(
-                              title: Text('Post by: ${snapshot.data![index].author}'),
+                              title: Text('Post by: ${snapshot.data![index].author}',),
                               
                             ),
-                            content: Text("${snapshot.data![index].location}\n${snapshot.data![index].description}\n${snapshot.data![index].date}"),
+                            content: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        RichText(
+                                            
+                                              text: TextSpan(
+                                                text: "Location: ",
+                                                style: const TextStyle( fontFamily: "Poppins",color: Colors.black, fontSize: 14,fontWeight: FontWeight.w700,),
+                                              children: <TextSpan>[
+                                                  TextSpan(
+                                                  text: "${snapshot.data![index].location}\n",
+                                                  style: const TextStyle( fontFamily: "Poppins", fontSize: 14, fontWeight: FontWeight.w400),
+                                                  ),
+                                              ],
+                                              ),
+                                          ),
+                                          RichText(
+                                        
+                                              text: TextSpan(
+                                                text: "Description: ",
+                                                style: const TextStyle( fontFamily: "Poppins",color: Colors.black, fontSize: 14,fontWeight: FontWeight.w700,),
+                                              children: <TextSpan>[
+                                                  TextSpan(
+                                                  text: "${snapshot.data![index].description}\n",
+                                                  style: const TextStyle( fontFamily: "Poppins", fontSize: 14, fontWeight: FontWeight.w400),
+                                                  ),
+                                              ],
+                                              ),
+                                          ),
+                                          RichText(
+                                         
+                                              text: TextSpan(
+                                                text: "Date: ",
+                                                style: const TextStyle( fontFamily: "Poppins",color: Colors.black, fontSize: 14,fontWeight: FontWeight.w700,),
+                                              children: <TextSpan>[
+                                                  TextSpan(
+                                                  text: "${snapshot.data![index].date}\n",
+                                                  style: const TextStyle( fontFamily: "Poppins", fontSize: 14, fontWeight: FontWeight.w400),
+                                                  ),
+                                              ],
+                                              ),
+                                          ),
+                                          RichText(
+                                       
+                                              text: TextSpan(
+                                                text: "Update Date: ",
+                                                style: const TextStyle( fontFamily: "Poppins",color: Colors.black, fontSize: 14,fontWeight: FontWeight.w700,),
+                                              children: <TextSpan>[
+                                                  TextSpan(
+                                                  text: "${snapshot.data![index].updateDate}",
+                                                  style: const TextStyle( fontFamily: "Poppins", fontSize: 14, fontWeight: FontWeight.w400),
+                                                  ),
+                                              ],
+                                              ),
+                                          ),
+                                      ],
+                                    ),
                             buttonBar: GFButtonBar(
                               children: <Widget>[
-                                GFButton(
-                                  onPressed: () { 
-                                    delete(request, snapshot.data![index].pk);
-                                          Navigator.push(context,
-                                              MaterialPageRoute(builder: (context) =>
-                                                  OwnPost(args: args)));},
-                                  text: 'Delete',
-                                ),
+                                // GFButton(
+                                //   onPressed: () { 
+                                //     delete(request, snapshot.data![index].pk);
+                                //           Navigator.push(context,
+                                //               MaterialPageRoute(builder: (context) =>
+                                //                   OwnPost(args: args)));},
+                                //   text: 'Delete',
+                                // ),
+                                IconButton(onPressed: () {
+                                      delete(request, snapshot.data![index].pk);
+                                      Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) =>OwnPost(args: args)
+                                      ),
+                                    );
+                                  }, icon: const Icon(Icons.delete_forever)),
                                   IconButton(onPressed: () {
                                       Navigator.push(
                                       context,
@@ -124,12 +188,46 @@ class _OwnPostState extends State<OwnPost> {
                           
 
                             ),
+                         
                       );
                     }
                   }
                 },
               ),
-            )
+            ),
+             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  // ignore: sort_child_properties_last
+                  child: const Text(
+                    "Back",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.blue),
+                  ),
+                  onPressed: () {
+              
+                      Navigator.of(context).pushReplacementNamed(
+                        "/foodsharing_page",
+                        arguments: UserArguments(
+                            args.isAdmin,
+                            args.username,
+                            args.nickname,
+                            args.desc,
+                            args.profURL,
+                            args.isVerified
+                        )
+                    );
+                      
+                  },
+                ),
+                
+              ],
+            ),
+
           ],
         ),
       ),

@@ -21,21 +21,14 @@ class _AddFoodsharingPageState extends State<AddFoodsharingPage> {
     String location = "";
     String description = "";
     String img = "";
-    String date = DateFormat("EEEEE, yyyy-MM-dd").format(DateTime.now());
-    String updateDate = DateFormat("EEEEE, yyyy-MM-dd").format(DateTime.now());
+
+    String date = DateFormat('dd-MM-yyyy hh:mm:ss').format(DateTime.now());
+    String updateDate = DateFormat('dd-MM-yyyy hh:mm:ss').format(DateTime.now());
  
     void create(request, location, description, img, date, updateDate) async {
     // ignore: unused_local_variable
-    print(location);
-    print(description);
-    print(img);
-    print(date);
-    print(updateDate);
-    // var response = await request.post('http://localhost:8000/foodsharing/foodsharingf',
-    //     {"location" : location, "description" : description, "img" :img, "date":date, "update_date":updateDate});
     var response = await request.post('https://nutrious.up.railway.app/foodsharing/foodsharingf',
         {"location" : location, "description" : description, "img" :img, "date":date, "update_date":updateDate});
-    print("add food sharing response: "+response);
     }
 
   @override
