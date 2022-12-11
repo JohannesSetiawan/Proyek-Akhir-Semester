@@ -114,8 +114,9 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                               Column(
                                                 // ignore: prefer_const_literals_to_create_immutables
                                                 children: [
-                                                  const Icon( Icons.keyboard_arrow_up, 
-                                                  color: Colors.white,),
+                                                  const Text( "scroll me",
+                                                   style: TextStyle(color: Colors.grey, fontSize: 13,
+                                                   )),
                                                 const Text( "\nCalories you have\n consumed\n",
                                                 overflow: TextOverflow.ellipsis,
                                                     textAlign : TextAlign.center,
