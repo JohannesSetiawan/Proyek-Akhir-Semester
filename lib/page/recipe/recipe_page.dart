@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-// import 'package:nutrious/util/curr_converter.dart';
+
 import '../../model/user_data.dart';
+import '../../model/foodrecipe.dart';
 import '../home/drawer.dart';
+import 'add_recipe.dart';
 
 class RecipePage extends StatefulWidget {
   const RecipePage({Key? key}) : super(key: key);
@@ -15,9 +17,22 @@ class RecipePage extends StatefulWidget {
 class _RecipePageState extends State<RecipePage> {
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
     final request = context.watch<CookieRequest>();
     final args = ModalRoute.of(context)!.settings.arguments as UserArguments;
+    // ignore: unused_element
+    Future<List<FoodRecipe>> fetchFoodRecipe() async {
+      final response =
+          await request.get("https://nutrious.up.railway.app/recipe/json/");
+
+      List<FoodRecipe> listFoodRecipe = [];
+      for (var recipe in response["data"]) {
+        if (recipe != null) {
+          listFoodRecipe.add(FoodRecipe.fromJson(recipe));
+        }
+      }
+      return listFoodRecipe;
+    }
+
     return Scaffold(
       appBar: AppBar(
           backgroundColor: const Color(0xFFF0FFFF),
@@ -37,42 +52,115 @@ class _RecipePageState extends State<RecipePage> {
       ),
       body: ListView(
         children: [
-           Container(
-                padding: const EdgeInsets.all(10),
-                child: Column(
+          Container(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(30),
-                          child: Image.asset('images/recipe-header.png'),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            children: const [
-                              Center(child: Text("Food Recipes", textAlign: TextAlign.center, style: TextStyle(
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(30),
+                      child: Image.asset('images/recipe-header.png'),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        children: const [
+                          Center(
+                              child: Text(
+                            "Food Recipes",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
-                                color: Colors.white
-                              ),)),
-                              SizedBox(height: 3,),
-                              Center(child: Text("Find your food inspirations and make your own food here. You can also help others by posting your own recipes ;)", textAlign: TextAlign.center, style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.white
-                              ),))
-                            ],
+                                color: Colors.white),
+                          )),
+                          SizedBox(
+                            height: 3,
                           ),
-                        )
-                      ],
+                          Center(
+                              child: Text(
+                            "Find your food inspirations and make your own food here. You can also help others by posting your own recipes ;)",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 15, color: Colors.white),
+                          ))
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 10,
+                      child: FutureBuilder(
+                        future: fetchFoodRecipe(),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.data == null) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else {
+                            if (!snapshot.hasData) {
+                              return const Text(
+                                  "No recipe shared yet");
+                            } else {
+                              return ListView.builder(
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (_, index) => Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 12),
+                                        padding: const EdgeInsets.all(20.0),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                  color: Colors.black,
+                                                  blurRadius: 2.0)
+                                            ]),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${snapshot.data![index].foodName}",
+                                              style: const TextStyle(
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                                "${snapshot.data![index].ingredients}"),
+                                          ],
+                                        ),
+                                      ));
+                            }
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),
-              ),
+              ],
+            ),
+          ),
         ],
       ),
-      
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.green,
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddRecipe(args: args),
+              ));
+        },
+        label: const Text(
+          'Add recipe',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
     );
   }
 }
