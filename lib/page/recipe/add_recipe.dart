@@ -90,9 +90,9 @@ class _AddRecipeState extends State<AddRecipe> {
                               BorderSide(color: Colors.grey, width: 0.0),
                         ),
                         border: OutlineInputBorder()),
-                    onFieldSubmitted: (value) {
+                    onSaved: (String? value) {
                       setState(() {
-                        foodName = value;
+                        foodName = value!;
 
                       });
                     },
@@ -127,9 +127,9 @@ class _AddRecipeState extends State<AddRecipe> {
                     keyboardType: TextInputType.multiline,
                     minLines: 3,
                     maxLines: null,
-                    onFieldSubmitted: (value) {
+                    onSaved: (String? value) {
                       setState(() {
-                        ingredients = value;
+                        ingredients = value!;
                       });
                     },
                     onChanged: (value) {
@@ -163,9 +163,9 @@ class _AddRecipeState extends State<AddRecipe> {
                     minLines: 3,
                     maxLines: null,
 
-                    onFieldSubmitted: (value) {
+                    onSaved: (String? value) {
                       setState(() {
-                        method = value;
+                        method = value!;
                       });
                     },
                     onChanged: (value) {
