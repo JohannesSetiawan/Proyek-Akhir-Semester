@@ -285,22 +285,22 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                                   TextSpan(
                                                   text: "${snapshot.data![index].category}",
                                                   
-                                                  style: const TextStyle(fontWeight: FontWeight.w700,),
+                                                  style: const TextStyle(fontWeight: FontWeight.w700,color: Colors.black),
                                                   ),
                                                   
                                                   if(!snapshot.data![index].isIncreasing)
                                                       TextSpan( 
                                                         text: hitungDecrease(snapshot.data![index].calorie),
-                                                      style: const TextStyle(color: Colors.white),
+                                                      style: const TextStyle(color: Colors.white,fontSize: 1),
                                                       ),
                                                   if(snapshot.data![index].isIncreasing)
                                                         TextSpan( 
                                                           text:hitungAdd(snapshot.data![index].calorie),
-                                                        style: const TextStyle(color: Colors.white),
+                                                        style: const TextStyle(color: Colors.white,fontSize: 1),
                                                       ),
                                                   TextSpan(  
                                                     text: hitungTotal(),
-                                                  style: const TextStyle(color: Colors.white),
+                                                  style: const TextStyle(color: Colors.white,fontSize: 1,),
                                                   ),
                                                   const TextSpan(  
                                                     text: '\nclick me to see the detail',
