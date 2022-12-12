@@ -32,13 +32,13 @@ class FoodRecipe {
 
     factory FoodRecipe.fromJson(Map<String, dynamic> json) => FoodRecipe(
         pk: json["pk"],
-        foodName: json["food_name"],
-        author: json["author"],
-        authorName: json["author_name"],
-        ingredients: json["ingredients"],
-        method: json["method"],
-        createdOn: DateTime.parse(json["created_on"]),
-        formattedDate: json["formatted_date"],
+        foodName: json["fields"]["food_name"],
+        author: json["fields"]["author"],
+        authorName: json["fields"]["author_name"],
+        ingredients: json["fields"]["ingredients"],
+        method: json["fields"]["method"],
+        createdOn: DateTime.parse(json["fields"]["created_on"]),
+        formattedDate: json["fields"]["formatted_date"],
 
     );
 
