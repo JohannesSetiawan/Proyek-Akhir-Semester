@@ -12,7 +12,8 @@
 6. Annava Wisha Sikoko - 2106635493
 
 ## Tautan APK
-[Link App Center](https://install.appcenter.ms/orgs/f02/apps/nutrious/distribution_groups/public)
+[Link App Center](https://install.appcenter.ms/orgs/f02/apps/nutrious/distribution_groups/public)<br>
+[Link Release Github](https://github.com/JohannesSetiawan/nutrious-mobile/releases/tag/1.0.0%2B1)
 
 ## Deskripsi Aplikasi
 Aplikasi yang akan kami buat adalah Nutrious Mobile. Nutrious Mobile merupakan aplikasi *mobile* yang diadaptasi dari aplikasi [web](https://nutrious.up.railway.app/) yang telah kami buat
