@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import '../../model/foodrecipe.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -6,6 +8,7 @@ import '../../util/recipe_formatter.dart';
 
 class RecipeDetail extends StatefulWidget {
   final FoodRecipe recipe;
+  // ignore: prefer_typing_uninitialized_variables
   final args;
 
   const RecipeDetail({super.key, required this.recipe, required this.args});
