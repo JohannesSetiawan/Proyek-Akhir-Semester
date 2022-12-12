@@ -87,10 +87,10 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                 margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: Column(
                   children: [
-                    Padding(padding: const EdgeInsets.all(10.0),
-                      child: Text("Welcome to Calorie Tracker, ${args.nickname} !", 
+                    const Padding(padding: EdgeInsets.all(10.0),
+                      child: Text("Welcome to Calorie Tracker!", 
                         overflow: TextOverflow.ellipsis,
-                        style:  const TextStyle(
+                        style:  TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 20
                           ),
@@ -114,8 +114,9 @@ class _CalorieTrackerPageState extends State<CalorieTrackerPage> {
                                               Column(
                                                 // ignore: prefer_const_literals_to_create_immutables
                                                 children: [
-                                                  const Icon( Icons.keyboard_arrow_up, 
-                                                  color: Colors.white,),
+                                                  const Text( "scroll me",
+                                                   style: TextStyle(color: Colors.grey, fontSize: 13,
+                                                   )),
                                                 const Text( "\nCalories you have\n consumed\n",
                                                 overflow: TextOverflow.ellipsis,
                                                     textAlign : TextAlign.center,
