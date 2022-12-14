@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-List<Foodsharing> foodsharingFromJson(String str) => List<Foodsharing>.from(json.decode(str).map((x) => Foodsharing.fromJson(x)));
+Foodsharing foodsharingFromJson(String str) => Foodsharing.fromJson(json.decode(str));
 
-String foodsharingToJson(List<Foodsharing> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String foodsharingToJson(Foodsharing data) => json.encode(data.toJson());
 
 class Foodsharing {
     Foodsharing({
@@ -20,7 +20,7 @@ class Foodsharing {
     });
 
     int pk;
-    int author;
+    String author;
     String location;
     String description;
     String date;

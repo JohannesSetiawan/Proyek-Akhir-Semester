@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-
 import '../../model/foodsharing.dart';
 import '../../model/user_data.dart';
 import '../home/drawer.dart';
 import 'add_foodsharing.dart';
+import 'package:getwidget/getwidget.dart';
+
+import 'own_post.dart';
 
 class FoodSharingPage extends StatefulWidget {
   const FoodSharingPage({Key? key}) : super(key: key);
@@ -22,8 +24,8 @@ class _FoodSharingPageState extends State<FoodSharingPage> {
     // ignore: unused_element
     Future<List<Foodsharing>> fetchFoodsharing() async {
       final response = await request
-          .get("https://nutrious.up.railway.app/foodsharing/show_jsonf/");
-
+          .get("https://nutrious.up.railway.app/foodsharing/show_jsonf");
+      // final response = await request.get("http://localhost:8000/foodsharing/show_jsonf");
       List<Foodsharing> listFoodsharing = [];
       for (var i in response["data"]) {
         if (i != null) {
@@ -58,52 +60,162 @@ class _FoodSharingPageState extends State<FoodSharingPage> {
                 flex: 1,
                 child: Container(
                     margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                    child: Column(
-                      children: [
-                        const Text(
-                          "Food-Sharing Information",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700, fontSize: 30),
-                        ),
-                        Text(
-                          "\nHello, ${args.nickname}!",
-                          style: const TextStyle(fontSize: 15),
-                        ),
-                        
+                    child: Column(children: [
+                      const Text(
+                        "Food-Sharing Information",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 30),
+                      ),
+                      Text(
+                        "\nHello, ${args.nickname}!",
+                        style: const TextStyle(fontSize: 15),
+                      ),
 
-
-
-
-
-
-
-
-                      Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        TextButton(
-                          // ignore: sort_child_properties_last
-                          child: const Text(
-                            "Add Page",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.blue),
-                          ),
-                          onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) =>
-                                    AddFoodsharingPage(args: args)));
+                      // const Spacer(),
+                      Expanded(
+                        flex: 10,
+                        child: FutureBuilder(
+                          future: fetchFoodsharing(),
+                          builder: (context, AsyncSnapshot snapshot) {
+                            if (snapshot.data == null) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else {
+                              if (!snapshot.hasData) {
+                                return const Text(
+                                    "There's no post about food-sharing");
+                              } else {
+                                return ListView.builder(
+                                  padding: const EdgeInsets.all(7),
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (_, index) => GFCard(
+                                    boxFit: BoxFit.cover,
+                                    titlePosition: GFPosition.start,
+                                    image: Image.network(
+                                      '${snapshot.data![index].img}',
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.2,
+                                      width: MediaQuery.of(context).size.width,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    showImage: true,
+                                    title: GFListTile(
+                                      title: Text(
+                                          'Post by: ${snapshot.data![index].author}'),
+                                    ),
+                                    content: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                          RichText(
+                                      
+                                              text: TextSpan(
+                                                text: "Location: ",
+                                                style: const TextStyle( fontFamily: "Poppins",color: Colors.black, fontSize: 14,fontWeight: FontWeight.w700,),
+                                              children: <TextSpan>[
+                                                  TextSpan(
+                                                  text: "${snapshot.data![index].location}\n",
+                                                  style: const TextStyle( fontFamily: "Poppins", fontSize: 14, fontWeight: FontWeight.w400),
+                                                  ),
+                                              ],
+                                              ),
+                                          ),
+                                          RichText(
+                                           
+                                              text: TextSpan(
+                                                text: "Description: ",
+                                                style: const TextStyle( fontFamily: "Poppins",color: Colors.black, fontSize: 14,fontWeight: FontWeight.w700,),
+                                              children: <TextSpan>[
+                                                  TextSpan(
+                                                  text: "${snapshot.data![index].description}\n",
+                                                  style: const TextStyle( fontFamily: "Poppins", fontSize: 14, fontWeight: FontWeight.w400),
+                                                  ),
+                                              ],
+                                              ),
+                                          ),
+                                          RichText(
+                                    
+                                              text: TextSpan(
+                                                text: "Date: ",
+                                                style: const TextStyle( fontFamily: "Poppins",color: Colors.black, fontSize: 14,fontWeight: FontWeight.w700,),
+                                              children: <TextSpan>[
+                                                  TextSpan(
+                                                  text: "${snapshot.data![index].date}\n",
+                                                  style: const TextStyle( fontFamily: "Poppins", fontSize: 14, fontWeight: FontWeight.w400),
+                                                  ),
+                                              ],
+                                              ),
+                                          ),
+                                          RichText(
+                                        
+                                              text: TextSpan(
+                                                text: "Update Date: ",
+                                                style: const TextStyle( fontFamily: "Poppins",color: Colors.black, fontSize: 14,fontWeight: FontWeight.w700,),
+                                              children: <TextSpan>[
+                                                  TextSpan(
+                                                  text: "${snapshot.data![index].updateDate}",
+                                                  style: const TextStyle( fontFamily: "Poppins", fontSize: 14, fontWeight: FontWeight.w400),
+                                                  ),
+                                              ],
+                                              ),
+                                          ),
+        
+                                      ],
+                                    ),
+                                      
+                                  ),
+                                );
+                              }
+                            }
                           },
                         ),
-                       
-                        ],
-                    )
+                      ),
 
-
-
+                      if (args.isVerified)
+                        // button add postnya
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            TextButton(
+                              // ignore: sort_child_properties_last
+                              child: const Text(
+                                "Add Page",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.blue),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            AddFoodsharingPage(args: args)));
+                              },
+                            ),
+                            TextButton(
+                              // ignore: sort_child_properties_last
+                              child: const Text(
+                                "See Own Post",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.blue),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            OwnPost(args: args)));
+                              },
+                            ),
+                          ],
+                        )
                     ]))),
-                  
           ],
         ),
       ), // Center

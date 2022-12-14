@@ -10,30 +10,7 @@ String foodRecipeToJson(List<FoodRecipe> data) => json.encode(List<dynamic>.from
 
 class FoodRecipe {
     FoodRecipe({
-        required this.model,
         required this.pk,
-        required this.fields,
-    });
-
-    Model? model;
-    int pk;
-    Fields fields;
-
-    factory FoodRecipe.fromJson(Map<String, dynamic> json) => FoodRecipe(
-        model: modelValues.map[json["model"]],
-        pk: json["pk"],
-        fields: Fields.fromJson(json["fields"]),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "model": modelValues.reverse[model],
-        "pk": pk,
-        "fields": fields.toJson(),
-    };
-}
-
-class Fields {
-    Fields({
         required this.foodName,
         required this.author,
         required this.authorName,
@@ -43,6 +20,8 @@ class Fields {
         required this.formattedDate,
     });
 
+   
+    int pk;
     String foodName;
     int author;
     String authorName;
@@ -51,17 +30,20 @@ class Fields {
     DateTime createdOn;
     String formattedDate;
 
-    factory Fields.fromJson(Map<String, dynamic> json) => Fields(
-        foodName: json["food_name"],
-        author: json["author"],
-        authorName: json["author_name"],
-        ingredients: json["ingredients"],
-        method: json["method"],
-        createdOn: DateTime.parse(json["created_on"]),
-        formattedDate: json["formatted_date"],
+    factory FoodRecipe.fromJson(Map<String, dynamic> json) => FoodRecipe(
+        pk: json["pk"],
+        foodName: json["fields"]["food_name"],
+        author: json["fields"]["author"],
+        authorName: json["fields"]["author_name"],
+        ingredients: json["fields"]["ingredients"],
+        method: json["fields"]["method"],
+        createdOn: DateTime.parse(json["fields"]["created_on"]),
+        formattedDate: json["fields"]["formatted_date"],
+
     );
 
     Map<String, dynamic> toJson() => {
+        "pk": pk,
         "food_name": foodName,
         "author": author,
         "author_name": authorName,
@@ -72,25 +54,4 @@ class Fields {
     };
 }
 
-// ignore: constant_identifier_names
-enum Model { RECIPE_FOODRECIPE }
 
-final modelValues = EnumValues({
-    "recipe.foodrecipe": Model.RECIPE_FOODRECIPE
-});
-
-class EnumValues<T> {
-    Map<String, T> map;
-    late Map<T, String> reverseMap;
-
-    EnumValues(this.map);
-
-    Map<T, String> get reverse {
-        // ignore: prefer_conditional_assignment, unnecessary_null_comparison
-        if (reverseMap == null) {
-            // ignore: unnecessary_new
-            reverseMap = map.map((k, v) => new MapEntry(v, k));
-        }
-        return reverseMap;
-    }
-}
